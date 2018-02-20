@@ -60,5 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void goBackToWelcome() {
+        Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
+        startActivity(intent);
     }
 }
