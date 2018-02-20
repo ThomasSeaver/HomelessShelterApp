@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void checkUserPass() {
+    private void checkUserPass() {
         if (usernameInput.getText().toString().equals("user") &&
                 passwordInput.getText().toString().equals("pass")) {
             wrongLogin.setVisibility(View.INVISIBLE);
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void goBackToWelcome() {
+    private void goBackToWelcome() {
         Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
         startActivity(intent);
     }
