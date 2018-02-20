@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">HomelessShelterApp</string>
-    <string name="welcome">Welcome</string>
-    <string name="login">Login</string>
-    <string name="register">Register</string>
+    <string name="homeless_shelter_app">Homeless Shelter App</string>
+    <string name="logout">Logout</string>
 </resources>
