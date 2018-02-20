@@ -18,7 +18,7 @@ public class EmptyAppActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.welcome_screen);
+        setContentView(R.layout.emptyapp_screen);
 
         logoutButton =  findViewById(R.id.button5);
         logoutButton.setOnClickListener(new View.OnClickListener() {
