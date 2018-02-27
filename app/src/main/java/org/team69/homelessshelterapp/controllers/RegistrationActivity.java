@@ -30,6 +30,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
 
+
         doneButton =  findViewById(R.id.button3);
         doneButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

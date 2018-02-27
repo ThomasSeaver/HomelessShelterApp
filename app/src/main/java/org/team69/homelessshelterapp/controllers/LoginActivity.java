@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Button;
 import android.view.View;
-
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.UserPassMap;
@@ -65,6 +67,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean checkUsingMap(String user, String pass) {
-        return false;
+        try {
+            FileInputStream fileInputStream = new FileInputStream("theUserPassMap.ser");
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            UserPassMap myNewlyReadInMap = (UserPassMap) objectInputStream.readObject();
+            objectInputStream.close();
+
+            if (myNewlyReadInMap.getPassword(user) != null
+                    && myNewlyReadInMap.getPassword(user).equals(pass)) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (IOException i) {
+            return false;
+        } catch (ClassNotFoundException c) {
+            return false;
+        }
     }
 }
