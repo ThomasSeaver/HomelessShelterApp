@@ -10,6 +10,7 @@ import android.view.View;
 
 
 import org.team69.homelessshelterapp.R;
+import org.team69.homelessshelterapp.model.UserPassMap;
 
 /**
  * Created by obecerra on 2/19/18.
@@ -49,8 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkUserPass() {
-        if (usernameInput.getText().toString().equals("user") &&
-                passwordInput.getText().toString().equals("pass")) {
+        if (checkUsingMap(usernameInput.getText().toString(), passwordInput.getText().toString())) {
             wrongLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getBaseContext(), EmptyAppActivity.class);
             startActivity(intent);
@@ -62,5 +62,9 @@ public class LoginActivity extends AppCompatActivity {
     private void goBackToWelcome() {
         Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
         startActivity(intent);
+    }
+
+    private boolean checkUsingMap(String user, String pass) {
+        return false;
     }
 }
