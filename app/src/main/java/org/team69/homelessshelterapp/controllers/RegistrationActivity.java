@@ -22,6 +22,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button cancelButton;
     private EditText usernameInput;
     private EditText passwordInput;
+    private EditText idInput;
     private Spinner adminOrUser;
     private EditText wrongLogin;
 
@@ -46,13 +47,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
         usernameInput = (EditText) findViewById(R.id.userBox);
         passwordInput = (EditText) findViewById(R.id.passBox);
+//        idInput = (EditText) findViewById(R.id.idBox);
+//        adminOrUser = (Spinner) findViewById(R.id.spinner);
         wrongLogin = (EditText) findViewById(R.id.wrongLoginText);
 
     }
 
     private void checkUserPass() {
-        if (usernameInput.getText().toString().equals("user") &&
-                passwordInput.getText().toString().equals("pass")) {
+        if (usernameInput.getText().toString().equals("") &&
+                passwordInput.getText().toString().equals("") &&
+                idInput.getText().toString().equals("") ) {
             wrongLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getBaseContext(), EmptyAppActivity.class);
             startActivity(intent);
