@@ -77,8 +77,21 @@ public class RegistrationActivity extends AppCompatActivity {
             objectOutputStream.close();
 
         } catch (IOException i) {
-            return;
+            createMap();
         } catch (ClassNotFoundException c) {
+            return;
+        }
+    }
+
+    private void createMap() {
+        try {
+            UserPassMap newMap = new UserPassMap();
+            newMap.addTo(usernameInput.getText().toString(), passwordInput.getText().toString());
+            FileOutputStream fileOutputStream = new FileOutputStream("myMap.whateverExtension");
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(newMap);
+            objectOutputStream.close();
+        } catch (IOException i) {
             return;
         }
     }
