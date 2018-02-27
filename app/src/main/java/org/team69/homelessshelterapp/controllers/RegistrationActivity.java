@@ -33,13 +33,16 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_screen);
+        setContentView(R.layout.registration_screen);
 
 
         doneButton =  findViewById(R.id.RegistrationDoneButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                createUser();
+                if (usernameInput.getText().toString() != null
+                        && passwordInput.getText().toString() != null) {
+                    createUser();
+                }
             }
         });
 
