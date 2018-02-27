@@ -7,21 +7,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Button;
 import android.view.View;
+import android.widget.Spinner;
 
 
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.UserPassMap;
-
 /**
  * Created by obecerra on 2/19/18.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class RegistrationActivity extends AppCompatActivity {
 
     private Button doneButton;
     private Button cancelButton;
     private EditText usernameInput;
     private EditText passwordInput;
+    private Spinner adminOrUser;
     private EditText wrongLogin;
 
     @Override
@@ -50,7 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkUserPass() {
-        if (checkUsingMap(usernameInput.getText().toString(), passwordInput.getText().toString())) {
+        if (usernameInput.getText().toString().equals("user") &&
+                passwordInput.getText().toString().equals("pass")) {
             wrongLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getBaseContext(), EmptyAppActivity.class);
             startActivity(intent);
@@ -62,9 +64,5 @@ public class LoginActivity extends AppCompatActivity {
     private void goBackToWelcome() {
         Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
         startActivity(intent);
-    }
-
-    private boolean checkUsingMap(String user, String pass) {
-        return false;
     }
 }
