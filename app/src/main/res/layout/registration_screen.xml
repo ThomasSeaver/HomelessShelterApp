@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="199dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="140dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginStart="93dp"
+        android:entries="User"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/RegistrationPasswordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="19dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintStart_toEndOf="@+id/RegistrationPasswordTextview" />
+
+    <EditText
+        android:id="@+id/RegistrationUsernameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="39dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="38dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/RegistrationPasswordText"
+        app:layout_constraintStart_toEndOf="@+id/RegistrationUsernameTextview"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/RegistrationUsernameTextview"
+        android:layout_width="81dp"
+        android:layout_height="39dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginTop="203dp"
+        android:text="Username"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintEnd_toStartOf="@+id/RegistrationUsernameText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Username" />
+
+    <TextView
+        android:id="@+id/RegistrationPasswordTextview"
+        android:layout_width="83dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="196dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginTop="33dp"
+        android:text="Password"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/RegistrationPasswordText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RegistrationUsernameTextview"
+        tools:text="Password" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="86dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="38dp"
+        android:layout_marginEnd="149dp"
+        android:layout_marginStart="149dp"
+        android:layout_marginTop="112dp"
+        android:text="Register"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        app:layout_constraintBottom_toTopOf="@+id/RegistrationUsernameText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Register" />
+
+    <Button
+        android:id="@+id/RegistrationCancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="34dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="32dp"
+        android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        tools:text="Cancel" />
+
+    <Button
+        android:id="@+id/RegistrationDoneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="34dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="32dp"
+        android:text="Done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/RegistrationCancelButton"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        tools:text="Done" />
+</android.support.constraint.ConstraintLayout>
