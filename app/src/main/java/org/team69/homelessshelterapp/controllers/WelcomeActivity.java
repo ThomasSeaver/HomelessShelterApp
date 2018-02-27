@@ -12,16 +12,16 @@ import org.team69.homelessshelterapp.R;
  * Created by obecerra on 2/19/18.
  */
 
-public class EmptyAppActivity extends AppCompatActivity {
+public class WelcomeActivity extends AppCompatActivity {
 
-    private Button logoutButton;
+    private Button loginButton;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.emptyapp_screen);
+        setContentView(R.layout.welcome_screen);
 
-        logoutButton =  findViewById(R.id.button5);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        loginButton =  findViewById(R.id.button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goToLogin();
             }
@@ -29,7 +29,8 @@ public class EmptyAppActivity extends AppCompatActivity {
     }
 
     private void goToLogin() {
-        Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
+        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
         startActivity(intent);
     }
+
 }

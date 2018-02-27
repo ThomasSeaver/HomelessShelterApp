@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">HomelessShelterApp</string>
+    <string name="homeless_shelter_app">Homeless Shelter App</string>
+    <string name="logout">Logout</string>
 </resources>
