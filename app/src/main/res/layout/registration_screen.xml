@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/AdminOrUserSpinner"
         android:layout_width="199dp"
         android:layout_height="32dp"
         android:layout_marginBottom="140dp"
@@ -26,7 +26,7 @@
         android:layout_marginBottom="19dp"
         android:ems="10"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintBottom_toTopOf="@+id/AdminOrUserSpinner"
         app:layout_constraintStart_toEndOf="@+id/RegistrationPasswordTextview" />
 
     <EditText
@@ -97,7 +97,7 @@
         android:text="Cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/AdminOrUserSpinner"
         tools:text="Cancel" />
 
     <Button
@@ -110,6 +110,6 @@
         android:text="Done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/RegistrationCancelButton"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/AdminOrUserSpinner"
         tools:text="Done" />
 </android.support.constraint.ConstraintLayout>
