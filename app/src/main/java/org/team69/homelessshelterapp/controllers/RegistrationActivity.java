@@ -15,6 +15,10 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import android.content.Context;
+
 
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.UserPassMap;
@@ -29,6 +33,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText usernameInput;
     private EditText passwordInput;
     private Spinner adminOrUserSpinner;
+    private HashMap<String, String> theMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (usernameInput.getText().toString() != null
                         && passwordInput.getText().toString() != null) {
                     createUser();
+                    goBackToLogin();
                 }
             }
         });
@@ -66,41 +72,27 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void createUser() {
-        try {
-            FileInputStream fileInputStream = new FileInputStream("theUserPassMap.ser");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            UserPassMap myNewlyReadInMap = (UserPassMap) objectInputStream.readObject();
-            objectInputStream.close();
-
-            myNewlyReadInMap.addTo(usernameInput.getText().toString(), passwordInput.getText().toString());
-
-            FileOutputStream fileOutputStream = new FileOutputStream("myMap.whateverExtension");
-            ObjectOutputStream objectOutputStream= new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(myNewlyReadInMap);
-            objectOutputStream.close();
-
-        } catch (IOException i) {
+        if (theMap == null) {
             createMap();
-        } catch (ClassNotFoundException c) {
             return;
         }
+        theMap.put(usernameInput.getText().toString(), passwordInput.getText().toString());
     }
 
     private void createMap() {
-        try {
-            UserPassMap newMap = new UserPassMap();
-            newMap.addTo(usernameInput.getText().toString(), passwordInput.getText().toString());
-            FileOutputStream fileOutputStream = new FileOutputStream("myMap.whateverExtension");
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(newMap);
-            objectOutputStream.close();
-        } catch (IOException i) {
-            return;
-        }
+        theMap = new HashMap<>();
+        theMap.put(usernameInput.getText().toString(), passwordInput.getText().toString());
     }
 
-    private void goBackToWelcome() {
-        Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
+    private void goBackToLogin() {
+        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+        intent.putExtra("map", theMap);
         startActivity(intent);
     }
+    private void goBackToWelcome() {
+        Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
+        intent.putExtra("map", theMap);
+        startActivity(intent);
+    }
+
 }

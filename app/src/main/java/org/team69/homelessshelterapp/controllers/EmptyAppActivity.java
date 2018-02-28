@@ -8,6 +8,8 @@ import android.widget.Button;
 
 import org.team69.homelessshelterapp.R;
 
+import java.util.HashMap;
+
 /**
  * Created by obecerra on 2/19/18.
  */
@@ -15,6 +17,7 @@ import org.team69.homelessshelterapp.R;
 public class EmptyAppActivity extends AppCompatActivity {
 
     private Button logoutButton;
+    private HashMap<String, String> theMap;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +29,14 @@ public class EmptyAppActivity extends AppCompatActivity {
                 goToLogin();
             }
         });
+
+        Intent intent = getIntent();
+        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 
     private void goToLogin() {
         Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
+        intent.putExtra("map", theMap);
         startActivity(intent);
     }
 }

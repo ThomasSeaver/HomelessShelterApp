@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 
 import org.team69.homelessshelterapp.R;
+import org.team69.homelessshelterapp.model.UserPassMap;
+
+import java.util.HashMap;
 
 /**
  * Created by obecerra on 2/19/18.
@@ -16,6 +19,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private Button loginButton;
     private Button registrationButton;
+    private HashMap<String, String> theMap;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,15 +39,20 @@ public class WelcomeActivity extends AppCompatActivity {
                 goToRegistration();
             }
         });
+
+        Intent intent = getIntent();
+        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 
     private void goToRegistration() {
         Intent intent = new Intent(getBaseContext(), RegistrationActivity.class);
+        intent.putExtra("map", theMap);
         startActivity(intent);
     }
 
     private void goToLogin() {
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+        intent.putExtra("map", theMap);
         startActivity(intent);
     }
 

@@ -11,6 +11,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.UserPassMap;
 
@@ -25,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameInput;
     private EditText passwordInput;
     private EditText wrongLogin;
+    private HashMap<String, String> theMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +53,15 @@ public class LoginActivity extends AppCompatActivity {
         passwordInput = (EditText) findViewById(R.id.passBox);
         wrongLogin = (EditText) findViewById(R.id.wrongLoginText);
 
+        Intent intent = getIntent();
+        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 
     private void checkUserPass() {
         if (checkUsingMap(usernameInput.getText().toString(), passwordInput.getText().toString())) {
             wrongLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getBaseContext(), EmptyAppActivity.class);
+            intent.putExtra("map", theMap);
             startActivity(intent);
         } else {
             wrongLogin.setVisibility(View.VISIBLE);
@@ -63,26 +70,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private void goBackToWelcome() {
         Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
+        intent.putExtra("map", theMap);
         startActivity(intent);
     }
 
     private boolean checkUsingMap(String user, String pass) {
-        try {
-            FileInputStream fileInputStream = new FileInputStream("theUserPassMap.ser");
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            UserPassMap myNewlyReadInMap = (UserPassMap) objectInputStream.readObject();
-            objectInputStream.close();
-
-            if (myNewlyReadInMap.getPassword(user) != null
-                    && myNewlyReadInMap.getPassword(user).equals(pass)) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (IOException i) {
+        if (theMap == null) {
             return false;
-        } catch (ClassNotFoundException c) {
-            return false;
+        } else if (theMap.get(user) != null && theMap.get(user).equals(pass)) {
+            return true;
         }
+        return false;
     }
 }

@@ -22,4 +22,8 @@ public class UserPassMap {
         backingHashMap.put(user, pass);
     }
 
+    public HashMap<String, String> getBackingHashMap() {
+        return backingHashMap;
+    }
+
 }
