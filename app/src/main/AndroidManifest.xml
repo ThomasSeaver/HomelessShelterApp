@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".controllers.LoginActivity"></activity>
         <activity android:name=".controllers.EmptyAppActivity"></activity>
+        <activity android:name=".controllers.RegistrationActivity"></activity>
+
 
     </application>
 

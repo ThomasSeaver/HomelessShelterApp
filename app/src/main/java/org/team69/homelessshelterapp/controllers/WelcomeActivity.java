@@ -15,6 +15,7 @@ import org.team69.homelessshelterapp.R;
 public class WelcomeActivity extends AppCompatActivity {
 
     private Button loginButton;
+    private Button registrationButton;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +27,18 @@ public class WelcomeActivity extends AppCompatActivity {
                 goToLogin();
             }
         });
+
+        registrationButton = findViewById(R.id.button2);
+        registrationButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                goToRegistration();
+            }
+        });
+    }
+
+    private void goToRegistration() {
+        Intent intent = new Intent(getBaseContext(), RegistrationActivity.class);
+        startActivity(intent);
     }
 
     private void goToLogin() {
