@@ -69,6 +69,8 @@ public class RegistrationActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, possibleValues);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adminOrUserSpinner.setAdapter(adapter);
+        Intent intent = getIntent();
+        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 
     private void createUser() {
