@@ -19,7 +19,8 @@
         <activity android:name=".controllers.LoginActivity"></activity>
         <activity android:name=".controllers.EmptyAppActivity"></activity>
         <activity android:name=".controllers.RegistrationActivity"></activity>
-
+        <activity android:name=".controllers.ShelterListActivity"></activity>
+        <activity android:name=".controllers.DetailActivity"></activity>
 
     </application>
 

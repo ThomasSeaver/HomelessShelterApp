@@ -2,4 +2,12 @@
     <string name="app_name">HomelessShelterApp</string>
     <string name="homeless_shelter_app">Homeless Shelter App</string>
     <string name="logout">Logout</string>
+    <string name="shelter_screen">List of Shelters</string>
+    <string name="go_back">Return to previous screen</string>
+    <string name="capacity">Capacity</string>
+    <string name="gender">Gender</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="address">Address</string>
+    <string name="phone_number">Phone Number</string>
 </resources>

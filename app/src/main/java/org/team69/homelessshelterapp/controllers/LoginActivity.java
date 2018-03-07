@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     private void checkUserPass() {
         if (checkUsingMap(usernameInput.getText().toString(), passwordInput.getText().toString())) {
             wrongLogin.setVisibility(View.INVISIBLE);
-            Intent intent = new Intent(getBaseContext(), EmptyAppActivity.class);
+            Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
             intent.putExtra("map", theMap);
             startActivity(intent);
         } else {
