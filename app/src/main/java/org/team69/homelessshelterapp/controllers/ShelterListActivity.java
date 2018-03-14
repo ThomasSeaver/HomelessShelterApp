@@ -80,7 +80,7 @@ public class ShelterListActivity extends AppCompatActivity {
             listView.setLayoutManager(layout);
 
             //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(), theMap);
+            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")), theMap);
             listView.setAdapter(adapter);
         }
     }
