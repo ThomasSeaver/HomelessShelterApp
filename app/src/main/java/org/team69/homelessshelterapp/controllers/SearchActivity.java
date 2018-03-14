@@ -71,7 +71,17 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    private void checkSearch() {}
+    private void checkSearch() {
+        Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
+
+        HashMap<String, String> newMap = new HashMap<>();
+        newMap.put("AgeRange", ageRange.getSelectedItem().toString());
+        newMap.put("ShelterName", shelterName.getText().toString());
+        newMap.put("Gender", gender.getSelectedItem().toString());
+
+        intent.putExtra("restrictionsMap", newMap);
+        startActivity(intent);
+    }
 
     private void backToShelterListActivity() {
         Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);

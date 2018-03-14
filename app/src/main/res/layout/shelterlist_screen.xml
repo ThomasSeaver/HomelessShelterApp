@@ -49,6 +49,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shelterListTitle" />
-        tools:layout_editor_absoluteY="121dp" />
+
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="256dp" />
+    tools:layout_editor_absoluteY="121dp" />
 
 </android.support.constraint.ConstraintLayout>

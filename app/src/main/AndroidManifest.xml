@@ -21,6 +21,8 @@
         <activity android:name=".controllers.RegistrationActivity"></activity>
         <activity android:name=".controllers.ShelterListActivity"></activity>
         <activity android:name=".controllers.DetailActivity"></activity>
+        <activity android:name=".controllers.SearchActivity"></activity>
+
 
     </application>
 
