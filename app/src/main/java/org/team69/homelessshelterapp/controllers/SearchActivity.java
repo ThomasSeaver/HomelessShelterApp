@@ -45,9 +45,10 @@ public class SearchActivity extends AppCompatActivity {
         ageRange.setAdapter(adapter1);
 
         gender = (Spinner) findViewById(R.id.genderSpinner);
-        String[] possibleValues2 = new String[2];
+        String[] possibleValues2 = new String[3];
         possibleValues2[0] = "Men";
         possibleValues2[1] = "Women";
+        possibleValues2[2] = "N/A";
         ArrayAdapter<String> adapter2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, possibleValues2);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gender.setAdapter(adapter2);
@@ -73,11 +74,24 @@ public class SearchActivity extends AppCompatActivity {
 
     private void checkSearch() {
         Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
+        String genderval = null;
+        String ageval = null;
+        String nameval = null;
+
+        if (!gender.getSelectedItem().toString().equals("N/A")) {
+            genderval = gender.getSelectedItem().toString();
+        }
+        if (!ageRange.getSelectedItem().toString().equals("Anyone")) {
+            ageval = ageRange.getSelectedItem().toString();
+        }
+        if (shelterName.getText().toString().length() != 0) {
+            nameval = shelterName.getText().toString();
+        }
 
         HashMap<String, String> newMap = new HashMap<>();
-        newMap.put("AgeRange", ageRange.getSelectedItem().toString());
-        newMap.put("ShelterName", shelterName.getText().toString());
-        newMap.put("Gender", gender.getSelectedItem().toString());
+        newMap.put("AgeRange", ageval);
+        newMap.put("ShelterName", nameval);
+        newMap.put("Gender", genderval);
 
         intent.putExtra("restrictionsMap", newMap);
         startActivity(intent);
