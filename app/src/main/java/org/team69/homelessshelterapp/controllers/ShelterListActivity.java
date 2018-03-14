@@ -30,6 +30,7 @@ public class ShelterListActivity extends AppCompatActivity {
     private Button seachButton;
     private RecyclerView listView;
     private HashMap<String, String> theMap;
+    private HashMap<String, String> restrictionsMap;
     private ShelterList list = new ShelterList();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,23 +51,38 @@ public class ShelterListActivity extends AppCompatActivity {
             }
         });
 
-        //copy shelter files into shelterlist and shelter models
-        readShelterFile();
-
-        //get handle for shelter recycler view
-        listView = findViewById(R.id.listShelters);
-        listView.setHasFixedSize(true); //increases performance
-
-        //set layout
-        LinearLayoutManager layout = new LinearLayoutManager(this);
-        listView.setLayoutManager(layout);
-
         Intent intent = getIntent();
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
+        restrictionsMap = (HashMap<String, String>) intent.getSerializableExtra("restrictionsMap");
 
-        //set adapter
-        ShelterListAdapter adapter = new ShelterListAdapter(list.getMap(), theMap);
-        listView.setAdapter(adapter);
+        if (restrictionsMap == null) {
+            //copy shelter files into shelterlist and shelter models
+            readShelterFile();
+
+            //get handle for shelter recycler view
+            listView = findViewById(R.id.listShelters);
+            listView.setHasFixedSize(true); //increases performance
+
+            //set layout
+            LinearLayoutManager layout = new LinearLayoutManager(this);
+            listView.setLayoutManager(layout);
+
+            //set adapter
+            ShelterListAdapter adapter = new ShelterListAdapter(list.getMap(), theMap);
+            listView.setAdapter(adapter);
+        } else {
+            //get handle for shelter recycler view
+            listView = findViewById(R.id.listShelters);
+            listView.setHasFixedSize(true); //increases performance
+
+            //set layout
+            LinearLayoutManager layout = new LinearLayoutManager(this);
+            listView.setLayoutManager(layout);
+
+            //set adapter
+            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(), theMap);
+            listView.setAdapter(adapter);
+        }
     }
     private void goToSearch() {
         Intent intent = new Intent(getBaseContext(), SearchActivity.class);
