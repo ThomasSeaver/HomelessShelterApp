@@ -69,7 +69,7 @@ public class ShelterListActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
     private void goToSearch() {
-        Intent intent = new Intent(getBaseContext(), searchActivity.class);
+        Intent intent = new Intent(getBaseContext(), SearchActivity.class);
         intent.putExtra("map", theMap);
         startActivity(intent);
     }
