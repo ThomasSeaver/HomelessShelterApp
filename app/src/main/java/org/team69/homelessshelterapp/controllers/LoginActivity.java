@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.team69.homelessshelterapp.R;
-import org.team69.homelessshelterapp.model.UserPassMap;
 
 /**
  * Created by obecerra on 2/19/18.

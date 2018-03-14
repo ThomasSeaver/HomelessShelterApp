@@ -1,0 +1,82 @@
+package org.team69.homelessshelterapp.controllers;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Button;
+import android.view.View;
+import android.widget.Spinner;
+
+import org.team69.homelessshelterapp.R;
+
+import java.util.HashMap;
+
+/**
+ * Created by obecerra on 3/13/18.
+ */
+
+public class SearchActivity extends AppCompatActivity {
+
+    private Button doneButton;
+    private Button cancelButton;
+    private HashMap<String, String> theMap;
+    private EditText shelterName;
+    private Spinner ageRange;
+    private Spinner gender;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //setContentView(R.layout.search_screen);
+
+        shelterName = (EditText) findViewById(R.id.userBox);
+
+        ageRange = (Spinner) findViewById(R.id.AdminOrUserSpinner);
+        String[] possibleValues1 = new String[4];
+        possibleValues1[0] = "Families with newborns";
+        possibleValues1[1] = "Children";
+        possibleValues1[2] = "Young Adults";
+        possibleValues1[3] = "Anyone";
+        ArrayAdapter<String> adapter1 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, possibleValues1);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ageRange.setAdapter(adapter1);
+
+        gender = (Spinner) findViewById(R.id.AdminOrUserSpinner);
+        String[] possibleValues2 = new String[2];
+        possibleValues2[0] = "Male";
+        possibleValues2[1] = "Female";
+        ArrayAdapter<String> adapter2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, possibleValues2);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gender.setAdapter(adapter2);
+
+        doneButton =  findViewById(R.id.button3);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                checkSearch();
+            }
+        });
+
+        cancelButton =  findViewById(R.id.button3);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                backToShelterListActivity();
+            }
+        });
+
+        Intent intent = getIntent();
+        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
+
+    }
+
+    private void checkSearch() {}
+
+    private void backToShelterListActivity() {
+        Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
+        intent.putExtra("map", theMap);
+        startActivity(intent);
+    }
+
+}
