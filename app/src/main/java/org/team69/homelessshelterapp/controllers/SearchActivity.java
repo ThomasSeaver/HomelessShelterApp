@@ -36,7 +36,7 @@ public class SearchActivity extends AppCompatActivity {
 
         ageRange = (Spinner) findViewById(R.id.ageRangeSpinner);
         String[] possibleValues1 = new String[4];
-        possibleValues1[0] = "Families with newborns";
+        possibleValues1[0] = "Families w/ newborns";
         possibleValues1[1] = "Children";
         possibleValues1[2] = "Young Adults";
         possibleValues1[3] = "Anyone";
@@ -46,8 +46,8 @@ public class SearchActivity extends AppCompatActivity {
 
         gender = (Spinner) findViewById(R.id.genderSpinner);
         String[] possibleValues2 = new String[2];
-        possibleValues2[0] = "Male";
-        possibleValues2[1] = "Female";
+        possibleValues2[0] = "Men";
+        possibleValues2[1] = "Women";
         ArrayAdapter<String> adapter2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, possibleValues2);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gender.setAdapter(adapter2);

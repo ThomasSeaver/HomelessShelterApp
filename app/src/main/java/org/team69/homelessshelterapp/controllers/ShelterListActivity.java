@@ -71,6 +71,9 @@ public class ShelterListActivity extends AppCompatActivity {
             ShelterListAdapter adapter = new ShelterListAdapter(list.getMap(), theMap);
             listView.setAdapter(adapter);
         } else {
+            //copy shelter files into shelterlist and shelter models
+            readShelterFile();
+
             //get handle for shelter recycler view
             listView = findViewById(R.id.listShelters);
             listView.setHasFixedSize(true); //increases performance
