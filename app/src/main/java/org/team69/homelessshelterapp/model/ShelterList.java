@@ -33,7 +33,7 @@ public class ShelterList implements java.io.Serializable {
 
     public HashMap<String, Shelter> getByRestriction(String gender, String age, String name){
         HashMap<String, Shelter> searchedList = shelters;
-        if (!gender.equals("null")) {
+        if (!(gender == null)) {
             for(Iterator<Map.Entry<String, Shelter>> it = searchedList.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry<String, Shelter> entry = it.next();
                 Shelter shelter = entry.getValue();
@@ -42,7 +42,7 @@ public class ShelterList implements java.io.Serializable {
                 }
             }
         }
-        if (!age.equals("null")) {
+        if (!(age == null)) {
             for(Iterator<Map.Entry<String, Shelter>> it = searchedList.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry<String, Shelter> entry = it.next();
                 Shelter shelter = entry.getValue();
@@ -51,7 +51,7 @@ public class ShelterList implements java.io.Serializable {
                 }
             }
         }
-        if (!name.equals("null")) {
+        if (!(name == null)) {
             for(Iterator<Map.Entry<String, Shelter>> it = searchedList.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry<String, Shelter> entry = it.next();
                 Shelter shelter = entry.getValue();
