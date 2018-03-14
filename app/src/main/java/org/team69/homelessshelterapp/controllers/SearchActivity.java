@@ -30,11 +30,11 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.search_screen);
+        setContentView(R.layout.search_screen);
 
-        shelterName = (EditText) findViewById(R.id.userBox);
+        shelterName = (EditText) findViewById(R.id.shelterNameText);
 
-        ageRange = (Spinner) findViewById(R.id.AdminOrUserSpinner);
+        ageRange = (Spinner) findViewById(R.id.ageRangeSpinner);
         String[] possibleValues1 = new String[4];
         possibleValues1[0] = "Families with newborns";
         possibleValues1[1] = "Children";
@@ -44,7 +44,7 @@ public class SearchActivity extends AppCompatActivity {
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ageRange.setAdapter(adapter1);
 
-        gender = (Spinner) findViewById(R.id.AdminOrUserSpinner);
+        gender = (Spinner) findViewById(R.id.genderSpinner);
         String[] possibleValues2 = new String[2];
         possibleValues2[0] = "Male";
         possibleValues2[1] = "Female";
@@ -52,14 +52,14 @@ public class SearchActivity extends AppCompatActivity {
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gender.setAdapter(adapter2);
 
-        doneButton =  findViewById(R.id.button3);
+        doneButton =  findViewById(R.id.searchDone);
         doneButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 checkSearch();
             }
         });
 
-        cancelButton =  findViewById(R.id.button3);
+        cancelButton =  findViewById(R.id.cancelDone);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 backToShelterListActivity();
