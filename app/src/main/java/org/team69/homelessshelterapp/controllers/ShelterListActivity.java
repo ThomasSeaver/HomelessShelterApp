@@ -27,6 +27,7 @@ import java.util.HashMap;
 public class ShelterListActivity extends AppCompatActivity {
 
     private Button logoutButton;
+    private Button seachButton;
     private RecyclerView listView;
     private HashMap<String, String> theMap;
     private ShelterList list = new ShelterList();
@@ -39,6 +40,13 @@ public class ShelterListActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goToLogin();
+            }
+        });
+
+        seachButton =  findViewById(R.id.searchButton);
+        seachButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                goToSearch();
             }
         });
 
@@ -59,6 +67,11 @@ public class ShelterListActivity extends AppCompatActivity {
         //set adapter
         ShelterListAdapter adapter = new ShelterListAdapter(list.getMap(), theMap);
         listView.setAdapter(adapter);
+    }
+    private void goToSearch() {
+        Intent intent = new Intent(getBaseContext(), SearchActivity.class);
+        intent.putExtra("map", theMap);
+        startActivity(intent);
     }
 
     private void goToLogin() {
