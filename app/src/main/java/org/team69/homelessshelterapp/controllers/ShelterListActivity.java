@@ -115,7 +115,7 @@ public class ShelterListActivity extends AppCompatActivity {
                         traits[i] = traits[i].substring(1, traits[i].length() - 1);
                     }
                 }
-                list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], Double.parseDouble(traits[4]), Double.parseDouble(traits[5]), traits[6], traits[8]));
+                list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[8], traits.length > 9 ? traits[9] : "Not available"));
             }
             br.close();
         } catch (IOException e) {

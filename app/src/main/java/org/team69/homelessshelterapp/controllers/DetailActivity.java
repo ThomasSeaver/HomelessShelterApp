@@ -56,11 +56,13 @@ public class DetailActivity extends AppCompatActivity {
         TextView address = findViewById(R.id.addressValue);
         TextView phoneNum = findViewById(R.id.phoneNumberValue);
 
+        String curCapacity = shelter.getCapacity().equals("Not available") ? shelter.getCapacity() : String.valueOf(Integer.parseInt(shelter.getCapacity()) - Integer.parseInt(shelter.getClaimedRooms()));
+
         shelterName.setText(shelter.getName());
-        capacity.setText(shelter.getCapacity());
+        capacity.setText(curCapacity);
         gender.setText(shelter.getGender());
-        longitude.setText(String.format(Locale.ENGLISH,"%e", shelter.getLongitude()));
-        latitude.setText(String.format(Locale.ENGLISH,"%e", shelter.getLatitude()));
+        longitude.setText(shelter.getLongitude());
+        latitude.setText(shelter.getLatitude());
         address.setText(shelter.getAddress());
         phoneNum.setText(shelter.getPhoneNumber());
 

@@ -8,12 +8,13 @@ public class Shelter implements java.io.Serializable{
         private String name;
         private String capacity;
         private String gender;
-        private double longitude;
-        private double latitude;
+        private String longitude;
+        private String latitude;
         private String address;
         private String phoneNumber;
+        private String claimedRooms;
 
-        public Shelter(String name, String capacity, String gender, double longitude, double latitude, String address, String phoneNumber) {
+        public Shelter(String name, String capacity, String gender, String longitude, String latitude, String address, String phoneNumber, String claimedRooms) {
             this.name = name;
             this.capacity = capacity;
             this.gender = gender;
@@ -21,13 +22,17 @@ public class Shelter implements java.io.Serializable{
             this.latitude = latitude;
             this.address = address;
             this.phoneNumber = phoneNumber;
+            this.claimedRooms = claimedRooms;
         }
 
         public String getName() { return name; }
         public String getCapacity() { return capacity; }
         public String getGender() { return gender; }
-        public double getLongitude() {return longitude; }
-        public double getLatitude() {return latitude; }
+        public String getLongitude() {return longitude; }
+        public String getLatitude() {return latitude; }
         public String getAddress() {return address; }
         public String getPhoneNumber() {return phoneNumber; }
+        public String getClaimedRooms() {return claimedRooms; }
+        public void claimRooms(int newClaims) {claimedRooms = String.valueOf(Integer.parseInt(claimedRooms) - newClaims);}
+        public void releaseRooms(int released) {claimedRooms = String.valueOf(Integer.parseInt(claimedRooms) + released);}
 }
