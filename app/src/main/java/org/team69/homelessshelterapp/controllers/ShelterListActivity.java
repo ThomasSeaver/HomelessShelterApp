@@ -9,16 +9,25 @@ import android.view.View;
 import android.widget.Button;
 
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.Shelter;
 import org.team69.homelessshelterapp.model.ShelterList;
+import org.team69.homelessshelterapp.model.User;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by TomStuff on 3/6/18.
@@ -103,23 +112,54 @@ public class ShelterListActivity extends AppCompatActivity {
     private void readShelterFile() {
 
         try {
-            InputStream is = getResources().openRawResource(R.raw.homeless_shelter_database);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-            String line;
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] traits = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                for (int i = 0; i < traits.length; i++) {
-                    if(traits[i] == null || traits[i].length() == 0) {
-                        traits[i] = "Not available";
-                    } else if (traits[i].charAt(0) == '"' && traits[i].charAt(traits[i].length() - 1) == '"'){
-                        traits[i] = traits[i].substring(1, traits[i].length() - 1);
+            String filePath = this.getFilesDir().getPath().toString() + "/homeless_shelter_database.csv";
+            File csv = new File(filePath);
+            if (!csv.exists()) {
+                try {
+                    InputStream is = getResources().openRawResource(R.raw.homeless_shelter_database);
+                    BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+                    String line;
+                    br.readLine();
+                    while ((line = br.readLine()) != null) {
+                        String[] traits = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                        for (int i = 0; i < traits.length; i++) {
+                            if(traits[i] == null || traits[i].length() == 0) {
+                                traits[i] = "Not available";
+                            } else if (traits[i].charAt(0) == '"' && traits[i].charAt(traits[i].length() - 1) == '"'){
+                                traits[i] = traits[i].substring(1, traits[i].length() - 1);
+                            }
+                        }
+                        list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[8], traits.length > 9 ? traits[9] : "Not available"));
                     }
+                    br.close();
+                } catch (IOException e) {
                 }
-                list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[8], traits.length > 9 ? traits[9] : "Not available"));
+                try {
+                    //make writer, append set to true
+                    CSVWriter writer = new CSVWriter(new FileWriter(filePath));
+                    for (Map.Entry<String, Shelter> shelter : ShelterList.getMap().entrySet())
+                    {
+                        //form
+                        String [] record = (shelter.getKey() + "," + shelter.getValue().getRecord()).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                        writer.writeNext(record);
+                    }
+                    writer.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                Reader reader =  new BufferedReader(new FileReader(csv.getPath()));
+                CSVReader csvReader = new CSVReader(reader);
+                String traits[];
+                while ((traits = csvReader.readNext()) != null) {
+                    list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[7], traits.length > 8 ? traits[8] : "Not available"));
+                }
             }
-            br.close();
         } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 }

@@ -33,6 +33,7 @@ public class Shelter implements java.io.Serializable{
         public String getAddress() {return address; }
         public String getPhoneNumber() {return phoneNumber; }
         public String getClaimedRooms() {return claimedRooms; }
+        public String getRecord() {return (name + "," + capacity + "," + gender + "," + longitude + "," + latitude + "," + address + "," + phoneNumber + "," + claimedRooms);}
         public void claimRooms(int newClaims) {claimedRooms = String.valueOf(Integer.parseInt(claimedRooms) - newClaims);}
         public void releaseRooms(int released) {claimedRooms = String.valueOf(Integer.parseInt(claimedRooms) + released);}
 }
