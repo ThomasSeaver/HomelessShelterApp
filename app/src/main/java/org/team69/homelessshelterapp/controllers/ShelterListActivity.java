@@ -80,7 +80,7 @@ public class ShelterListActivity extends AppCompatActivity {
             listView.setLayoutManager(layout);
 
             //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(list.getMap(), theMap);
+            ShelterListAdapter adapter = new ShelterListAdapter(list.getMap(), theMap, theUser);
             listView.setAdapter(adapter);
         } else {
             //copy shelter files into shelterlist and shelter models
@@ -95,7 +95,7 @@ public class ShelterListActivity extends AppCompatActivity {
             listView.setLayoutManager(layout);
 
             //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")), theMap);
+            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")), theMap, theUser);
             listView.setAdapter(adapter);
         }
     }
