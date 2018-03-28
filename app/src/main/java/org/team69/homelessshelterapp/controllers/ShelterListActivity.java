@@ -33,6 +33,7 @@ public class ShelterListActivity extends AppCompatActivity {
     private HashMap<String, String> restrictionsMap;
     private ShelterList list = new ShelterList();
 
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shelterlist_screen);

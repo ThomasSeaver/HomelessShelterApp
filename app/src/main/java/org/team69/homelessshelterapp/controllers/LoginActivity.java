@@ -7,14 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Button;
 import android.view.View;
+
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.HashMap;
 
 import org.team69.homelessshelterapp.R;
+import org.team69.homelessshelterapp.model.User;
 
 /**
  * Created by obecerra on 2/19/18.
@@ -28,11 +34,14 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordInput;
     private EditText wrongLogin;
     private HashMap<String, String> theMap;
+    private Map<String, User> userList = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
+
+        readUserFile();
 
         doneButton =  findViewById(R.id.button3);
         doneButton.setOnClickListener(new View.OnClickListener() {
@@ -57,10 +66,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkUserPass() {
-        if (checkUsingMap(usernameInput.getText().toString(), passwordInput.getText().toString())) {
+        /*if (checkUsingMap(usernameInput.getText().toString(), passwordInput.getText().toString())) {
             wrongLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
             intent.putExtra("map", theMap);
+            //get the user details
+            startActivity(intent);
+        }*/
+        if (checkUsingFile(usernameInput.getText().toString(), passwordInput.getText().toString())) {
+            wrongLogin.setVisibility(View.INVISIBLE);
+            Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
             //get the user details
             startActivity(intent);
         } else {
@@ -81,5 +96,40 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private boolean checkUsingFile(String username, String pass) {
+        for (User user : userList.values()) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(pass)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void readUserFile() {
+
+        try {
+            File path = this.getFilesDir();
+            File file = new File(path, "user-pass-data.txt");
+
+            FileInputStream in = new FileInputStream(file);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            String line;
+            br.readLine();
+            while ((line = br.readLine()) != null) {
+                String[] traits = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                for (int i = 0; i < traits.length; i++) {
+                    if(traits[i] == null || traits[i].length() == 0) {
+                        traits[i] = "Not available";
+                    } else if (traits[i].charAt(0) == '"' && traits[i].charAt(traits[i].length() - 1) == '"'){
+                        traits[i] = traits[i].substring(1, traits[i].length() - 1);
+                    }
+                }
+                userList.put(traits[0], new User(traits[1], traits[2]));
+            }
+            br.close();
+        } catch (IOException e) {
+        }
     }
 }
