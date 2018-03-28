@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class ShelterList implements java.io.Serializable {
 
-    private HashMap<String, Shelter> shelters;
+    private static HashMap<String, Shelter> shelters;
 
     public ShelterList() {
         shelters = new HashMap<>();
@@ -27,7 +27,7 @@ public class ShelterList implements java.io.Serializable {
         return null;
     }
 
-    public HashMap<String, Shelter> getMap() {
+    public static HashMap<String, Shelter> getMap() {
         return shelters;
     }
 
