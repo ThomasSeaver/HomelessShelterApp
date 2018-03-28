@@ -8,6 +8,25 @@ public class User {
 
     private String shelterClaimedID;
     private int bedsClaimed;
+    private String username;
+    private String password;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String s) {
+        username = s;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String s) {
+        password = s;
+    }
+
 
     public int getBedsClaimed() {
         return bedsClaimed;
