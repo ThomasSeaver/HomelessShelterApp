@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText wrongLogin;
     private HashMap<String, String> theMap;
     private Map<String, User> userList = new HashMap<>();
+    private User theUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,8 @@ public class LoginActivity extends AppCompatActivity {
         if (checkUsingFile(usernameInput.getText().toString(), passwordInput.getText().toString())) {
             wrongLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
-            //get the user details
+            //get the user detail
+            intent.putExtra("theUser", theUser);
             startActivity(intent);
         } else {
             wrongLogin.setVisibility(View.VISIBLE);
@@ -83,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean checkUsingFile(String username, String pass) {
         for (User user : userList.values()) {
             if (user.getUsername().equals(username) && user.getPassword().equals(pass)) {
+                theUser = user;
                 return true;
             }
         }

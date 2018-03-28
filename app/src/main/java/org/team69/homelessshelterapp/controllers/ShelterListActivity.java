@@ -41,6 +41,7 @@ public class ShelterListActivity extends AppCompatActivity {
     private HashMap<String, String> theMap;
     private HashMap<String, String> restrictionsMap;
     private ShelterList list = new ShelterList();
+    private User theUser;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class ShelterListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
         restrictionsMap = (HashMap<String, String>) intent.getSerializableExtra("restrictionsMap");
+        theUser = (User) intent.getSerializableExtra("theUser");
 
         if (restrictionsMap == null) {
             //copy shelter files into shelterlist and shelter models
@@ -100,6 +102,7 @@ public class ShelterListActivity extends AppCompatActivity {
     private void goToSearch() {
         Intent intent = new Intent(getBaseContext(), SearchActivity.class);
         intent.putExtra("map", theMap);
+        intent.putExtra("theUser", theUser);
         startActivity(intent);
     }
 

@@ -31,7 +31,7 @@ public class DetailActivity extends AppCompatActivity {
     private Button doneButton;
     private TextView shelterFullError;
     private TextView onlyOneShelterError;
-    private User user;
+    private User theUser;
     private EditText bedsToClaim;
 
     @Override
@@ -64,7 +64,7 @@ public class DetailActivity extends AppCompatActivity {
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
         shelterList = (ArrayList<Shelter>) intent.getSerializableExtra("shelterList");
         shelterNum = (int) intent.getSerializableExtra("shelterNum");
-        user = (User) intent.getSerializableExtra("user");
+        theUser = (User) intent.getSerializableExtra("theUser");
         shelter = shelterList.get(shelterNum);
         populateDetails();
 
@@ -94,12 +94,13 @@ public class DetailActivity extends AppCompatActivity {
     private void goBackToShelterList() {
         Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
         intent.putExtra("map", theMap);
+        intent.putExtra("theUser", theUser);
         startActivity(intent);
     }
 
     private void checkDone() {
         //check if user already has beds claimed (check where they have them claimed)
-        if (!user.getShelterClaimedID().equals(shelter.getName())
+        if (!theUser.getShelterClaimedID().equals(shelter.getName())
                 && Integer.parseInt(bedsToClaim.getText().toString()) != 0) {
             shelterFullError.setVisibility(View.INVISIBLE);
             onlyOneShelterError.setVisibility(View.VISIBLE);
@@ -125,15 +126,15 @@ public class DetailActivity extends AppCompatActivity {
 
         //update this shelters vacancy if no errors and the user
         if (Integer.parseInt(bedsToClaim.getText().toString()) == 0) {
-            shelter.releaseRooms(user.getBedsClaimed());
-            user.setBedsClaimed(0);
-            user.setShelterClaimedID("");
+            shelter.releaseRooms(theUser.getBedsClaimed());
+            theUser.setBedsClaimed(0);
+            theUser.setShelterClaimedID("");
             //SEND THE INTENT?
             goBackToShelterList();
         } else {
             shelter.claimRooms(Integer.parseInt(bedsToClaim.getText().toString()));
-            user.setBedsClaimed(Integer.parseInt(bedsToClaim.getText().toString()));
-            user.setShelterClaimedID(shelter.getName());
+            theUser.setBedsClaimed(Integer.parseInt(bedsToClaim.getText().toString()));
+            theUser.setShelterClaimedID(shelter.getName());
             //SEND THE INTENT?
             goBackToShelterList();
         }

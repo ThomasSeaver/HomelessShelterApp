@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import org.team69.homelessshelterapp.R;
+import org.team69.homelessshelterapp.model.User;
 
 import java.util.HashMap;
 
@@ -18,6 +19,7 @@ public class EmptyAppActivity extends AppCompatActivity {
 
     private Button logoutButton;
     private HashMap<String, String> theMap;
+    private User theUser;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +33,7 @@ public class EmptyAppActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
+        theUser = (User) intent.getSerializableExtra("theUser");
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 

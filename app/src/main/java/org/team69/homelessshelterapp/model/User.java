@@ -4,7 +4,7 @@ package org.team69.homelessshelterapp.model;
  * Created by obecerra on 3/27/18.
  */
 
-public class User {
+public class User implements java.io.Serializable {
 
     private String shelterClaimedID;
     private int bedsClaimed;
