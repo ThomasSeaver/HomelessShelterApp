@@ -4,20 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Button;
 import android.view.View;
 import android.widget.Spinner;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
-import android.content.Context;
 
 
 import org.team69.homelessshelterapp.R;
@@ -32,69 +22,51 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button cancelButton;
     private EditText usernameInput;
     private EditText passwordInput;
-    private Spinner adminOrUserSpinner;
-    private HashMap<String, String> theMap;
+    private EditText idInput;
+    private Spinner adminOrUser;
+    private EditText wrongLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration_screen);
+        setContentView(R.layout.login_screen);
 
-
-        doneButton =  findViewById(R.id.RegistrationDoneButton);
+        doneButton =  findViewById(R.id.button3);
         doneButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (usernameInput.getText().toString() != null
-                        && passwordInput.getText().toString() != null) {
-                    createUser();
-                    goBackToLogin();
-                }
+                checkUserPass();
             }
         });
 
-        cancelButton = findViewById(R.id.RegistrationCancelButton);
+        cancelButton = findViewById(R.id.button4);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goBackToWelcome();
             }
         });
 
-        usernameInput = (EditText) findViewById(R.id.RegistrationUsernameText);
-        passwordInput = (EditText) findViewById(R.id.RegistrationPasswordText);
+        usernameInput = (EditText) findViewById(R.id.userBox);
+        passwordInput = (EditText) findViewById(R.id.passBox);
+//        idInput = (EditText) findViewById(R.id.idBox);
+//        adminOrUser = (Spinner) findViewById(R.id.spinner);
+        wrongLogin = (EditText) findViewById(R.id.wrongLoginText);
 
-        adminOrUserSpinner = (Spinner) findViewById(R.id.AdminOrUserSpinner);
-        String[] possibleValues = new String[2];
-        possibleValues[0] = "User";
-        possibleValues[1] = "Admin";
-        ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, possibleValues);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adminOrUserSpinner.setAdapter(adapter);
-        Intent intent = getIntent();
-        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 
-    private void createUser() {
-        if (theMap == null) {
-            createMap();
-            return;
+    private void checkUserPass() {
+        if (usernameInput.getText().toString().equals("") &&
+                passwordInput.getText().toString().equals("") &&
+                idInput.getText().toString().equals("") ) {
+            wrongLogin.setVisibility(View.INVISIBLE);
+            Intent intent = new Intent(getBaseContext(), EmptyAppActivity.class);
+            startActivity(intent);
+        } else {
+            wrongLogin.setVisibility(View.VISIBLE);
         }
-        theMap.put(usernameInput.getText().toString(), passwordInput.getText().toString());
     }
 
-    private void createMap() {
-        theMap = new HashMap<>();
-        theMap.put(usernameInput.getText().toString(), passwordInput.getText().toString());
-    }
-
-    private void goBackToLogin() {
-        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-        intent.putExtra("map", theMap);
-        startActivity(intent);
-    }
     private void goBackToWelcome() {
         Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
-        intent.putExtra("map", theMap);
         startActivity(intent);
     }
-
 }
