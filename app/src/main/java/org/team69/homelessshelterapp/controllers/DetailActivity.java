@@ -41,9 +41,9 @@ public class DetailActivity extends AppCompatActivity {
 
         bedsToClaim = findViewById(R.id.numBeds);
 
-        shelterFullError = findViewById(0);
+        shelterFullError = findViewById(R.id.shelterFullError);
         shelterFullError.setVisibility(View.INVISIBLE);
-        onlyOneShelterError = findViewById(0);
+        onlyOneShelterError = findViewById(R.id.onlyOneShelterError);
         onlyOneShelterError.setVisibility(View.INVISIBLE);
 
         doneButton = findViewById(R.id.claimButton);
