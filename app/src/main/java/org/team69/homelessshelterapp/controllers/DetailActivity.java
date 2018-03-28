@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.team69.homelessshelterapp.R;
@@ -31,18 +32,21 @@ public class DetailActivity extends AppCompatActivity {
     private TextView shelterFullError;
     private TextView onlyOneShelterError;
     private User user;
+    private EditText bedsToClaim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_screen);
 
+        bedsToClaim = findViewById(R.id.numBeds);
+
         shelterFullError = findViewById(0);
         shelterFullError.setVisibility(View.INVISIBLE);
         onlyOneShelterError = findViewById(0);
         onlyOneShelterError.setVisibility(View.INVISIBLE);
 
-        doneButton = findViewById(0);
+        doneButton = findViewById(R.id.claimButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 checkDone();
@@ -60,6 +64,7 @@ public class DetailActivity extends AppCompatActivity {
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
         shelterList = (ArrayList<Shelter>) intent.getSerializableExtra("shelterList");
         shelterNum = (int) intent.getSerializableExtra("shelterNum");
+        user = (User) intent.getSerializableExtra("user");
         shelter = shelterList.get(shelterNum);
         populateDetails();
 
@@ -94,10 +99,44 @@ public class DetailActivity extends AppCompatActivity {
 
     private void checkDone() {
         //check if user already has beds claimed (check where they have them claimed)
+        if (!user.getShelterClaimedID().equals(shelter.getName())
+                && Integer.parseInt(bedsToClaim.getText().toString()) != 0) {
+            shelterFullError.setVisibility(View.INVISIBLE);
+            onlyOneShelterError.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        //check if shelter has no capacity specified
+        if (shelter.getCapacity().equals("Not available")) {
+            shelterFullError.setVisibility(View.VISIBLE);
+            onlyOneShelterError.setVisibility(View.INVISIBLE);
+            return;
+        }
 
         //check if user claim is more than vacancies
+        int vacancy = Integer.parseInt(shelter.getCapacity())
+                - Integer.parseInt(shelter.getClaimedRooms());
 
-        //update this shelters vacancy if no errors
+        if (Integer.parseInt(bedsToClaim.getText().toString()) > vacancy) {
+            shelterFullError.setVisibility(View.VISIBLE);
+            onlyOneShelterError.setVisibility(View.INVISIBLE);
+            return;
+        }
+
+        //update this shelters vacancy if no errors and the user
+        if (Integer.parseInt(bedsToClaim.getText().toString()) == 0) {
+            shelter.releaseRooms(user.getBedsClaimed());
+            user.setBedsClaimed(0);
+            user.setShelterClaimedID("");
+            //SEND THE INTENT?
+            goBackToShelterList();
+        } else {
+            shelter.claimRooms(Integer.parseInt(bedsToClaim.getText().toString()));
+            user.setBedsClaimed(Integer.parseInt(bedsToClaim.getText().toString()));
+            user.setShelterClaimedID(shelter.getName());
+            //SEND THE INTENT?
+            goBackToShelterList();
+        }
     }
 
 }

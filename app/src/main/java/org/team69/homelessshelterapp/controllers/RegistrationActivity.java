@@ -26,12 +26,12 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import android.content.Context;
+import android.util.Log;
 
 
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.Shelter;
 import org.team69.homelessshelterapp.model.User;
-import org.team69.homelessshelterapp.model.UserPassMap;
 /**
  * Created by obecerra on 2/19/18.
  */
@@ -88,6 +88,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void createUser() {
         if (!userNameAvailable(usernameInput.getText().toString())) {
             //if username already taken
+            Log.d("available", "username taken");
         } else {
             try {
                 File path = this.getFilesDir();
@@ -154,6 +155,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 userList.put(traits[0], new User(traits[1], traits[2]));
             }
             br.close();
+            Log.d("userListLength", "" + userList.size());
         } catch (IOException e) {
         }
     }

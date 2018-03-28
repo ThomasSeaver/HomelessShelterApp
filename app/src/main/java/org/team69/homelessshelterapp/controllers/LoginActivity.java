@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import android.util.Log;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -99,11 +100,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean checkUsingFile(String username, String pass) {
+        Log.d("1", username);
+        Log.d("2", pass);
         for (User user : userList.values()) {
+            Log.d("3", user.getUsername());
+            Log.d("4", user.getPassword());
             if (user.getUsername().equals(username) && user.getPassword().equals(pass)) {
                 return true;
             }
         }
+        Log.d("5", "going false");
+
         return false;
     }
 
