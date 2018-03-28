@@ -25,11 +25,26 @@ public class DetailActivity extends AppCompatActivity {
     private Shelter shelter;
     private Button cancelButton;
     private HashMap<String, String> theMap;
+    private Button doneButton;
+    private TextView shelterFullError;
+    private TextView onlyOneShelterError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_screen);
+
+        shelterFullError = findViewById(0);
+        shelterFullError.setVisibility(View.INVISIBLE);
+        onlyOneShelterError = findViewById(0);
+        onlyOneShelterError.setVisibility(View.INVISIBLE);
+
+        doneButton = findViewById(0);
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                checkDone();
+            }
+        });
 
         cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +85,14 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
         intent.putExtra("map", theMap);
         startActivity(intent);
+    }
+
+    private void checkDone() {
+        //check if user already has beds claimed (check where they have them claimed)
+
+        //check if user claim is more than vacancies
+
+        //update this shelters vacancy if no errors
     }
 
 }

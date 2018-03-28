@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
             wrongLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
             intent.putExtra("map", theMap);
+            //get the user details
             startActivity(intent);
         } else {
             wrongLogin.setVisibility(View.VISIBLE);
