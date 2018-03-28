@@ -10,4 +10,12 @@
     <string name="latitude">Latitude</string>
     <string name="address">Address</string>
     <string name="phone_number">Phone Number</string>
+    <string name="cancel">Cancel</string>
+    <string name="claim">Claim</string>
+    <string name="number_of_beds">Number of Beds:</string>
+    <string name="only_one_bed_per_user">Only One Bed Per User</string>
+    <string name="no_vacancies_left">No Vacancies Left</string>
+    <string name="number_of_beds">Number of Beds:</string>
+    <string name="claim">Claim</string>
+    <string name="cancel">Cancel</string>
 </resources>
