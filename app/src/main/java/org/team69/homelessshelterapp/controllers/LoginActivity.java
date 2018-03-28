@@ -1,6 +1,5 @@
 package org.team69.homelessshelterapp.controllers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,14 +7,13 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.view.View;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
+import com.opencsv.CSVReader;
 
-import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import java.io.Reader;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -66,13 +64,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkUserPass() {
-        /*if (checkUsingMap(usernameInput.getText().toString(), passwordInput.getText().toString())) {
-            wrongLogin.setVisibility(View.INVISIBLE);
-            Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
-            intent.putExtra("map", theMap);
-            //get the user details
-            startActivity(intent);
-        }*/
         if (checkUsingFile(usernameInput.getText().toString(), passwordInput.getText().toString())) {
             wrongLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
@@ -89,15 +80,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private boolean checkUsingMap(String user, String pass) {
-        if (theMap == null) {
-            return false;
-        } else if (theMap.get(user) != null && theMap.get(user).equals(pass)) {
-            return true;
-        }
-        return false;
-    }
-
     private boolean checkUsingFile(String username, String pass) {
         for (User user : userList.values()) {
             if (user.getUsername().equals(username) && user.getPassword().equals(pass)) {
@@ -110,26 +92,16 @@ public class LoginActivity extends AppCompatActivity {
     private void readUserFile() {
 
         try {
-            File path = this.getFilesDir();
-            File file = new File(path, "user-pass-data.txt");
-
-            FileInputStream in = new FileInputStream(file);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-            String line;
-            br.readLine();
-            while ((line = br.readLine()) != null) {
-                String[] traits = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                for (int i = 0; i < traits.length; i++) {
-                    if(traits[i] == null || traits[i].length() == 0) {
-                        traits[i] = "Not available";
-                    } else if (traits[i].charAt(0) == '"' && traits[i].charAt(traits[i].length() - 1) == '"'){
-                        traits[i] = traits[i].substring(1, traits[i].length() - 1);
-                    }
-                }
+            String filePath = this.getFilesDir().getPath().toString() + "/user_database.csv";
+            Reader reader =  new BufferedReader(new FileReader(filePath));
+            CSVReader csvReader = new CSVReader(reader);
+            String traits[];
+            while ((traits = csvReader.readNext()) != null) {
                 userList.put(traits[0], new User(traits[1], traits[2]));
+
             }
-            br.close();
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
