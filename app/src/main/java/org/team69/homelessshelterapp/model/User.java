@@ -11,9 +11,11 @@ public class User implements java.io.Serializable {
     private String username;
     private String password;
 
-    public User (String u, String p) {
+    public User (String u, String p, String s, int b) {
         username = u;
         password = p;
+        shelterClaimedID = s;
+        bedsClaimed = b;
     }
 
     public String getUsername() {
