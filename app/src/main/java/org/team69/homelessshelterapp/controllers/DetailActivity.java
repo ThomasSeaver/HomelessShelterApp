@@ -9,10 +9,12 @@ import android.widget.TextView;
 
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.Shelter;
+import org.team69.homelessshelterapp.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+
 
 /**
  * Created by TomStuff on 3/6/18.
@@ -28,6 +30,7 @@ public class DetailActivity extends AppCompatActivity {
     private Button doneButton;
     private TextView shelterFullError;
     private TextView onlyOneShelterError;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
