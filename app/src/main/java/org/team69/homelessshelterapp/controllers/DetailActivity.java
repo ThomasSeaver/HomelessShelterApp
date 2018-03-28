@@ -3,6 +3,7 @@ package org.team69.homelessshelterapp.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +38,6 @@ import java.util.Map;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private static ArrayList<Shelter> shelterList;
     private static int shelterNum;
     private Shelter shelter;
     private Button cancelButton;
@@ -79,14 +79,16 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
-        shelterList = (ArrayList<Shelter>) intent.getSerializableExtra("shelterList");
+        //should be able to just use this as an int but comes out null I don't know intents what lol
         shelterNum = (int) intent.getSerializableExtra("shelterNum");
+        //subtract by 2 because initial pos is 2 higher than it should be im not sure why
+        shelterNum -= 2;
         userID = intent.getStringExtra("userID");
         readShelterFile();
         readUserFile();
 
         theUser = userList.get(userID);
-        shelter = shelterList.get(shelterNum);
+        shelter = list.findShelterByID(String.valueOf(shelterNum));
         populateDetails();
 
     }
@@ -150,18 +152,23 @@ public class DetailActivity extends AppCompatActivity {
         if (Integer.parseInt(bedsToClaim.getText().toString()) == 0) {
             shelter.releaseRooms(theUser.getBedsClaimed());
             theUser.setBedsClaimed(0);
-            theUser.setShelterClaimedID("");
+            theUser.setShelterClaimedID("-1");
             writeNewShelterInfo(shelter);
             writeNewUserInfo();
-            //SEND THE INTENT?
             goBackToShelterList();
         } else {
-            shelter.claimRooms(Integer.parseInt(bedsToClaim.getText().toString()));
+            int curClaim = theUser.getBedsClaimed();
+            if (curClaim < Integer.parseInt(bedsToClaim.getText().toString())) {
+                int toClaim = Integer.parseInt(bedsToClaim.getText().toString()) - curClaim;
+                shelter.claimRooms(toClaim);
+            } else if (curClaim > Integer.parseInt(bedsToClaim.getText().toString())){
+                int toRelease = curClaim - Integer.parseInt(bedsToClaim.getText().toString());
+                shelter.releaseRooms(toRelease);
+            }
             theUser.setBedsClaimed(Integer.parseInt(bedsToClaim.getText().toString()));
-            theUser.setShelterClaimedID(shelter.getName());
+            theUser.setShelterClaimedID(String.valueOf(shelterNum));
             writeNewShelterInfo(shelter);
             writeNewUserInfo();
-            //SEND THE INTENT?
             goBackToShelterList();
         }
     }
@@ -173,7 +180,7 @@ public class DetailActivity extends AppCompatActivity {
             CSVWriter writer = new CSVWriter(new FileWriter(filePath));
             for (Map.Entry<String, Shelter> shelter : ShelterList.getMap().entrySet())
             {
-                if (String.valueOf(shelterNum) == shelter.getKey()) {
+                if (String.valueOf(shelterNum).equals(shelter.getKey())) {
                     String[] record = (String.valueOf(shelterNum) + "," + shelterChange.getRecord()).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                     writer.writeNext(record);
 
