@@ -9,6 +9,7 @@ import android.widget.Button;
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.UserPassMap;
 
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -40,6 +41,14 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
+
+        //Use on startup to clear database files in case you messed something up
+        //Uncomment, run once to get to welcome screen, close emulator, recomment, start again
+        //Would work without restarting but would redelete everything if you ever come back to welcome
+        //Only should use if you are having issues with users/shelter lists, or if you want to clear
+        //debugClear();
+
+
         Intent intent = getIntent();
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
@@ -56,4 +65,15 @@ public class WelcomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    private void debugClear() {
+        String filePath = this.getFilesDir().getPath().toString() + "/user_pass_database.csv";
+        File csv = new File(filePath);
+        filePath = this.getFilesDir().getPath().toString() + "/homeless_shelter_database.csv";
+        File csv2 = new File(filePath);
+
+        csv.delete();
+        csv2.delete();
+
+    }
 }

@@ -41,7 +41,7 @@ public class ShelterListActivity extends AppCompatActivity {
     private HashMap<String, String> theMap;
     private HashMap<String, String> restrictionsMap;
     private ShelterList list = new ShelterList();
-    private User theUser;
+    private String userID;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class ShelterListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
         restrictionsMap = (HashMap<String, String>) intent.getSerializableExtra("restrictionsMap");
-        theUser = (User) intent.getSerializableExtra("theUser");
+        userID = intent.getStringExtra("userID");
 
         if (restrictionsMap == null) {
             //copy shelter files into shelterlist and shelter models
@@ -80,7 +80,7 @@ public class ShelterListActivity extends AppCompatActivity {
             listView.setLayoutManager(layout);
 
             //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(list.getMap(), theMap, theUser);
+            ShelterListAdapter adapter = new ShelterListAdapter(list.getMap(), theMap, userID);
             listView.setAdapter(adapter);
         } else {
             //copy shelter files into shelterlist and shelter models
@@ -95,14 +95,14 @@ public class ShelterListActivity extends AppCompatActivity {
             listView.setLayoutManager(layout);
 
             //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")), theMap, theUser);
+            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")), theMap, userID);
             listView.setAdapter(adapter);
         }
     }
     private void goToSearch() {
         Intent intent = new Intent(getBaseContext(), SearchActivity.class);
         intent.putExtra("map", theMap);
-        intent.putExtra("theUser", theUser);
+        intent.putExtra("userID", userID);
         startActivity(intent);
     }
 

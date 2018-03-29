@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.team69.homelessshelterapp.R;
+import org.team69.homelessshelterapp.model.Shelter;
+import org.team69.homelessshelterapp.model.ShelterList;
 import org.team69.homelessshelterapp.model.User;
 
 /**
@@ -33,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText wrongLogin;
     private HashMap<String, String> theMap;
     private Map<String, User> userList = new HashMap<>();
-    private User theUser;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             wrongLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
             //get the user detail
-            intent.putExtra("theUser", theUser);
+            intent.putExtra("userID", userID);
             startActivity(intent);
         } else {
             wrongLogin.setVisibility(View.VISIBLE);
@@ -83,9 +85,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean checkUsingFile(String username, String pass) {
-        for (User user : userList.values()) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(pass)) {
-                theUser = user;
+        for (Map.Entry<String, User> user : userList.entrySet())
+        {
+            if (user.getValue().getUsername().equals(username) && user.getValue().getPassword().equals(pass)) {
+                userID = user.getKey();
                 return true;
             }
         }
@@ -95,13 +98,12 @@ public class LoginActivity extends AppCompatActivity {
     private void readUserFile() {
 
         try {
-            String filePath = this.getFilesDir().getPath().toString() + "/user_database.csv";
+            String filePath = this.getFilesDir().getPath().toString() + "/user_pass_database.csv";
             Reader reader =  new BufferedReader(new FileReader(filePath));
             CSVReader csvReader = new CSVReader(reader);
             String traits[];
             while ((traits = csvReader.readNext()) != null) {
-                userList.put(traits[0], new User(traits[1], traits[2]));
-
+                userList.put(traits[0], new User(traits[1], traits[2], traits[3], Integer.parseInt(traits[4])));
             }
         } catch (IOException e) {
             e.printStackTrace();

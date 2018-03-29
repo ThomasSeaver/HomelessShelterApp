@@ -84,11 +84,11 @@ public class RegistrationActivity extends AppCompatActivity {
         } else {
             try {
                 //get file in memory
-                String filePath = this.getFilesDir().getPath().toString() + "/user_database.csv";
+                String filePath = this.getFilesDir().getPath().toString() + "/user_pass_database.csv";
                 //make writer, append set to true
                 CSVWriter writer = new CSVWriter(new FileWriter(filePath, true));
                 //form
-                String [] record = (String.valueOf(lastUserID) + "," + usernameInput.getText().toString() + "," + passwordInput.getText().toString() + ",,0").split(",");
+                String [] record = (String.valueOf(lastUserID) + "," + usernameInput.getText().toString() + "," + passwordInput.getText().toString() + ",-1,0").split(",");
                 writer.writeNext(record);
 
                 writer.close();
@@ -122,9 +122,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private void readUserFile() {
 
         try {
-            String filePath = this.getFilesDir().getPath().toString() + "/user_database.csv";
+            String filePath = this.getFilesDir().getPath().toString() + "/user_pass_database.csv";
             File csv = new File(filePath);
-            if (!csv.exists()) {
+            if (csv.exists()) {
                 try {
                     csv.createNewFile();
                 } catch (IOException e) {
@@ -135,7 +135,7 @@ public class RegistrationActivity extends AppCompatActivity {
             CSVReader csvReader = new CSVReader(reader);
             String traits[];
             while ((traits = csvReader.readNext()) != null) {
-                userList.put(traits[0], new User(traits[1], traits[2]));
+                userList.put(traits[0], new User(traits[1], traits[2], traits[3], Integer.parseInt(traits[4])));
                 lastUserID++;
             }
         } catch (IOException e) {

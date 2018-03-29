@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.Shelter;
-import org.team69.homelessshelterapp.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +21,7 @@ import java.util.HashMap;
 public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.ViewHolder> {
     private static ArrayList<Shelter> shelterList;
     private HashMap<String, String> theMap;
-    private User theUser;
+    private String userID;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textView;
@@ -40,6 +39,7 @@ public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.
                     intent.putExtra("shelterList", shelterList);
                     intent.putExtra("shelterNum", position);
                     intent.putExtra("map", adapter.theMap);
+                    intent.putExtra("userID", adapter.userID);
                     context.startActivity(intent);
                 }
             });
@@ -53,11 +53,10 @@ public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.
 
     }
 
-    public ShelterListAdapter(HashMap<String, Shelter> shelterList, HashMap<String, String> theMap, User u) {
+    public ShelterListAdapter(HashMap<String, Shelter> shelterList, HashMap<String, String> theMap, String userID) {
         this.theMap = theMap;
+        this.userID = userID;
         this.shelterList = new ArrayList<>(shelterList.values());
-        this.theUser = u;
-
     }
 
     @Override
