@@ -81,8 +81,12 @@ public class DetailActivity extends AppCompatActivity {
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
         //should be able to just use this as an int but comes out null I don't know intents what lol
         shelterNum = (int) intent.getSerializableExtra("shelterNum");
+        Log.d("shelterNum", String.valueOf(shelterNum));
         //subtract by 2 because initial pos is 2 higher than it should be im not sure why
         shelterNum -= 2;
+        if(shelterNum == -1) shelterNum = 12;
+        if(shelterNum == -2) shelterNum = 11;
+        Log.d("shelterNum", String.valueOf(shelterNum));
         userID = intent.getStringExtra("userID");
         readShelterFile();
         readUserFile();
