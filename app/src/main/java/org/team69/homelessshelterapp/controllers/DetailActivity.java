@@ -46,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
         onlyOneShelterError = findViewById(R.id.onlyOneShelterError);
         onlyOneShelterError.setVisibility(View.INVISIBLE);
 
-        doneButton = findViewById(R.id.claimButton);
+        doneButton = findViewById(R.id.doneButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 checkDone();
