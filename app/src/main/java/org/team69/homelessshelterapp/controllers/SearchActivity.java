@@ -26,7 +26,7 @@ public class SearchActivity extends AppCompatActivity {
     private EditText shelterName;
     private Spinner ageRange;
     private Spinner gender;
-    private User theUser;
+    private String userID;
 
 
     @Override
@@ -70,12 +70,12 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        theUser = (User) intent.getSerializableExtra("theUser");
+        userID = intent.getStringExtra("userID");
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 
     private void checkSearch() {
-        Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
+        Intent intent = new Intent(getBaseContext(), MapsActivity.class);
         String genderval = null;
         String ageval = null;
         String nameval = null;
@@ -96,15 +96,16 @@ public class SearchActivity extends AppCompatActivity {
         newMap.put("Gender", genderval);
 
         intent.putExtra("restrictionsMap", newMap);
-        intent.putExtra("theUser", theUser);
+        intent.putExtra("userID", userID);
         startActivity(intent);
     }
 
     private void backToShelterListActivity() {
         Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
         intent.putExtra("map", theMap);
-        intent.putExtra("theUser", theUser);
+        intent.putExtra("userID", userID);
         startActivity(intent);
     }
+
 
 }
