@@ -31,6 +31,7 @@ import java.util.Map;
  * Created by TomStuff on 3/6/18.
  */
 
+@SuppressWarnings("ALL")
 public class DetailActivity extends AppCompatActivity {
 
     private static int shelterNum;

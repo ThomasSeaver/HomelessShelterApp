@@ -35,11 +35,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings({"ALL", "FeatureEnvy"})
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap viewMap;
     private final ShelterList list = new ShelterList();
-    private HashMap<String, String> restrictionsMap;
+    private Map<String, String> restrictionsMap;
     private String userID;
     private Button listButton;
     private Button searchButton;
@@ -95,7 +96,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void makeMarkers(HashMap<String, Shelter> map) {
+    @SuppressWarnings("FeatureEnvy")
+    private void makeMarkers(Map<String, Shelter> map) {
         for (Shelter shelter : map.values()) {
             viewMap.addMarker(new MarkerOptions()
                     .position(shelter.getCoordinates())
@@ -144,6 +146,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
 
+    @SuppressWarnings("FeatureEnvy")
     private void readShelterFile() {
 
         try {

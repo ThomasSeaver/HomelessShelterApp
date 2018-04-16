@@ -32,13 +32,14 @@ import java.util.Map;
  * Created by TomStuff on 3/6/18.
  */
 
+@SuppressWarnings("ALL")
 public class ShelterListActivity extends AppCompatActivity {
 
     private Button logoutButton;
     private Button searchButton;
     private Button mapButton;
     private RecyclerView listView;
-    private HashMap<String, String> restrictionsMap;
+    private Map<String, String> restrictionsMap;
     private final ShelterList list = new ShelterList();
     private String userID;
 
