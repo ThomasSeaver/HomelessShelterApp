@@ -7,15 +7,15 @@ import com.google.android.gms.maps.model.LatLng;
  */
 
 public class Shelter implements java.io.Serializable{
-    private String name;
-    private String capacity;
-    private String gender;
-    private String longitude;
-    private String latitude;
-    private String address;
-    private String phoneNumber;
+    private final String name;
+    private final String capacity;
+    private final String gender;
+    private final String longitude;
+    private final String latitude;
+    private final String address;
+    private final String phoneNumber;
     private String claimedRooms;
-    private LatLng coordinates;
+    private final LatLng coordinates;
 
     /**
      *

@@ -8,7 +8,7 @@ import java.util.HashMap ;
 
 public class UserPassMap {
 
-    private HashMap<String, String> backingHashMap;
+    private final HashMap<String, String> backingHashMap;
 
     public UserPassMap() {
         backingHashMap = new HashMap<>();

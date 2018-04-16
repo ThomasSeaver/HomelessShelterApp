@@ -38,7 +38,7 @@ import java.util.Map;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap viewMap;
-    private ShelterList list = new ShelterList();
+    private final ShelterList list = new ShelterList();
     private HashMap<String, String> restrictionsMap;
     private String userID;
     private Button listButton;
@@ -55,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         searchButton =  findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 backToSearchActivity();
             }
@@ -62,6 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         listButton =  findViewById(R.id.listButton);
         listButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 backToShelterListActivity();
             }
@@ -87,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //read shelter file then create shelter markers
         readShelterFile();
         if (restrictionsMap == null) {
-            makeMarkers(list.getMap());
+            makeMarkers(ShelterList.getMap());
         } else {
             makeMarkers(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")));
         }
@@ -114,9 +116,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         public View getInfoContents(Marker marker) {
 
-            TextView title = ((TextView)shelterView.findViewById(R.id.title));
+            TextView title = shelterView.findViewById(R.id.title);
             title.setText(marker.getTitle());
-            TextView info = ((TextView)shelterView.findViewById(R.id.info));
+            TextView info = shelterView.findViewById(R.id.info);
             info.setText(marker.getSnippet());
 
             return shelterView;

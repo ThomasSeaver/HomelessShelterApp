@@ -20,11 +20,11 @@ import java.util.HashMap;
 
 public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.ViewHolder> {
     private static ArrayList<Shelter> shelterList;
-    private HashMap<String, String> theMap;
-    private String userID;
+    private final HashMap<String, String> theMap;
+    private final String userID;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView textView;
+        private final TextView textView;
         private final Context context;
         private int position;
 
@@ -33,6 +33,7 @@ public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.
             super(view);
             context = itemView.getContext();
             view.setOnClickListener(new View.OnClickListener() {
+                @Override
                 public void onClick(View view) {
                     final Intent intent;
                     intent =  new Intent(context, DetailActivity.class);
@@ -55,7 +56,7 @@ public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.
     public ShelterListAdapter(HashMap<String, Shelter> shelterList, HashMap<String, String> theMap, String userID) {
         this.theMap = theMap;
         this.userID = userID;
-        this.shelterList = new ArrayList<>(shelterList.values());
+        ShelterListAdapter.shelterList = new ArrayList<>(shelterList.values());
     }
 
     @Override

@@ -41,16 +41,18 @@ public class ShelterListActivity extends AppCompatActivity {
     private RecyclerView listView;
     private HashMap<String, String> theMap;
     private HashMap<String, String> restrictionsMap;
-    private ShelterList list = new ShelterList();
+    private final ShelterList list = new ShelterList();
     private String userID;
 
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shelterlist_screen);
 
         logoutButton =  findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 goToLogin();
             }
@@ -58,6 +60,7 @@ public class ShelterListActivity extends AppCompatActivity {
 
         seachButton =  findViewById(R.id.searchButton);
         seachButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 goToSearch();
             }
@@ -65,6 +68,7 @@ public class ShelterListActivity extends AppCompatActivity {
 
         mapButton = findViewById(R.id.showMap);
         mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 goToMap();
             }
@@ -88,7 +92,7 @@ public class ShelterListActivity extends AppCompatActivity {
             listView.setLayoutManager(layout);
 
             //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(list.getMap(), theMap, userID);
+            ShelterListAdapter adapter = new ShelterListAdapter(ShelterList.getMap(), theMap, userID);
             listView.setAdapter(adapter);
         } else {
             //copy shelter files into shelterlist and shelter models

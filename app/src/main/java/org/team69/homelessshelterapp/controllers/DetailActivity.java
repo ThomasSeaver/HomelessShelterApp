@@ -47,8 +47,8 @@ public class DetailActivity extends AppCompatActivity {
     private TextView onlyOneShelterError;
     private String userID;
     private EditText bedsToClaim;
-    private Map<String, User> userList = new HashMap<>();
-    private ShelterList list = new ShelterList();
+    private final Map<String, User> userList = new HashMap<>();
+    private final ShelterList list = new ShelterList();
     private User theUser;
 
     @Override
@@ -65,6 +65,7 @@ public class DetailActivity extends AppCompatActivity {
 
         doneButton = findViewById(R.id.doneButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 checkDone();
             }
@@ -72,6 +73,7 @@ public class DetailActivity extends AppCompatActivity {
 
         cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 goBackToShelterList();
             }

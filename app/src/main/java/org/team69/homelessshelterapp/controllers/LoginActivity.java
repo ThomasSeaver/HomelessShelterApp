@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordInput;
     private EditText wrongLogin;
     private HashMap<String, String> theMap;
-    private Map<String, User> userList = new HashMap<>();
+    private final Map<String, User> userList = new HashMap<>();
     private String userID;
 
     @Override
@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
         doneButton =  findViewById(R.id.button3);
         doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 checkUserPass();
             }
@@ -53,14 +54,15 @@ public class LoginActivity extends AppCompatActivity {
 
         cancelButton = findViewById(R.id.button4);
         cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 goBackToWelcome();
             }
         });
 
-        usernameInput = (EditText) findViewById(R.id.userBox);
-        passwordInput = (EditText) findViewById(R.id.passBox);
-        wrongLogin = (EditText) findViewById(R.id.wrongLoginText);
+        usernameInput = findViewById(R.id.userBox);
+        passwordInput = findViewById(R.id.passBox);
+        wrongLogin = findViewById(R.id.wrongLoginText);
 
         Intent intent = getIntent();
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
