@@ -11,6 +11,7 @@ import java.util.Set;
  * Created by TomStuff on 3/6/18.
  */
 
+@SuppressWarnings("ALL")
 public class ShelterList implements java.io.Serializable {
 
     private static HashMap<String, Shelter> shelters;
