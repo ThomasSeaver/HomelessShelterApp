@@ -3,6 +3,9 @@ package org.team69.homelessshelterapp.model;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
+ * Shelter info holder just for shelter data, specifically containing all the information
+ * about individual shelters
+ *
  * Created by TomStuff on 3/6/18.
  */
 
@@ -18,6 +21,7 @@ public class Shelter implements java.io.Serializable{
     private final LatLng coordinates;
 
     /**
+     * Constructs base shelter from all necessary values
      *
      * @param name of the shelter
      * @param capacity of the shelter
@@ -119,7 +123,7 @@ public class Shelter implements java.io.Serializable{
      * @return the info about the shelter
      */
     public String getInfo() {
-        return "Capacity: " + (capacity.equals("Not available") ? capacity : String.valueOf(
+        return "Capacity: " + ("Not available".equals(capacity) ? capacity : String.valueOf(
                 Integer.parseInt(capacity) - Integer.parseInt(claimedRooms))) + "\nAccepts: "
                 + gender
                 + "\nPhone Number: " + phoneNumber

@@ -21,7 +21,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private Button doneButton;
     private Button cancelButton;
-    private HashMap<String, String> theMap;
     private EditText shelterName;
     private Spinner ageRange;
     private Spinner gender;
@@ -72,7 +71,6 @@ public class SearchActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         userID = intent.getStringExtra("userID");
-        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 
     private void checkSearch() {
@@ -81,13 +79,13 @@ public class SearchActivity extends AppCompatActivity {
         String ageval = null;
         String nameval = null;
 
-        if (!gender.getSelectedItem().toString().equals("N/A")) {
+        if (!"N/A".equals(gender.getSelectedItem().toString())) {
             genderval = gender.getSelectedItem().toString();
         }
-        if (!ageRange.getSelectedItem().toString().equals("Anyone")) {
+        if (!"Anyone".equals(ageRange.getSelectedItem().toString())) {
             ageval = ageRange.getSelectedItem().toString();
         }
-        if (shelterName.getText().toString().length() != 0) {
+        if (!shelterName.getText().toString().isEmpty()) {
             nameval = shelterName.getText().toString();
         }
 
@@ -103,7 +101,6 @@ public class SearchActivity extends AppCompatActivity {
 
     private void backToShelterListActivity() {
         Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
-        intent.putExtra("map", theMap);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }

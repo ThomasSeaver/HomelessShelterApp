@@ -9,7 +9,6 @@ import android.widget.Button;
 import org.team69.homelessshelterapp.R;
 
 import java.io.File;
-import java.util.HashMap;
 
 /**
  * Created by obecerra on 2/19/18.
@@ -19,7 +18,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private Button loginButton;
     private Button registrationButton;
-    private HashMap<String, String> theMap;
 
 
     @Override
@@ -50,19 +48,15 @@ public class WelcomeActivity extends AppCompatActivity {
         //Only should use if you are having issues with users/shelter lists, or if you want to clear
         //debugClear();
 
-        Intent intent = getIntent();
-        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 
     private void goToRegistration() {
         Intent intent = new Intent(getBaseContext(), RegistrationActivity.class);
-        intent.putExtra("map", theMap);
         startActivity(intent);
     }
 
     private void goToLogin() {
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-        intent.putExtra("map", theMap);
         startActivity(intent);
     }
 

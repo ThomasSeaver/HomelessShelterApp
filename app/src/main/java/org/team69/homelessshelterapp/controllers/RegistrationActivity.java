@@ -34,7 +34,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText usernameInput;
     private EditText passwordInput;
     private Spinner adminOrUserSpinner;
-    private HashMap<String, String> theMap;
     private final Map<String, User> userList = new HashMap<>();
     private int lastUserID;
 
@@ -50,8 +49,8 @@ public class RegistrationActivity extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (usernameInput.getText().toString() != null
-                        && passwordInput.getText().toString() != null) {
+                if (!("").equals(usernameInput.getText().toString())
+                        && !("").equals(passwordInput.getText().toString())) {
                     createUser();
                     goBackToLogin();
                 }
@@ -77,7 +76,6 @@ public class RegistrationActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adminOrUserSpinner.setAdapter(adapter);
         Intent intent = getIntent();
-        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 
     private void createUser() {
@@ -86,7 +84,8 @@ public class RegistrationActivity extends AppCompatActivity {
         } else {
             try {
                 //get file in memory
-                String filePath = this.getFilesDir().getPath().toString() + "/user_pass_database.csv";
+                File fileDir = this.getFilesDir();
+                String filePath = fileDir.getPath() + "/user_pass_database.csv";
                 //make writer, append set to true
                 CSVWriter writer = new CSVWriter(new FileWriter(filePath, true));
                 //form
@@ -112,12 +111,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void goBackToLogin() {
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-        intent.putExtra("map", theMap);
         startActivity(intent);
     }
     private void goBackToWelcome() {
         Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
-        intent.putExtra("map", theMap);
         startActivity(intent);
     }
 
