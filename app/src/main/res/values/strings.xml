@@ -18,5 +18,16 @@
     <string name="return_to_search">Search</string>
     <string name="return_to_list">Return to list</string>
     <string name="show_map">Show map</string>
-
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="login_screen">Login Screen</string>
+    <string name="login">Login</string>
+    <string name="done">Done</string>
+    <string name="welcome">Welcome</string>
+    <string name="incorrect_login">Incorrect Login, Please Try Again</string>
+    <string name="register">Register</string>
+    <string name="age_range">Age Range</string>
+    <string name="name">Name</string>
+    <string name="search">Search</string>
+    <string name="shelter_name">Shelter Name</string>
 </resources>

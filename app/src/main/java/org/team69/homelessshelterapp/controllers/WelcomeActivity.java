@@ -11,13 +11,12 @@ import org.team69.homelessshelterapp.R;
 import java.io.File;
 
 /**
+ * Start up activity, prompting users to login or register an account to use the app
+ *
  * Created by obecerra on 2/19/18.
  */
 
 public class WelcomeActivity extends AppCompatActivity {
-
-    private Button loginButton;
-    private Button registrationButton;
 
 
     @Override
@@ -25,7 +24,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_screen);
 
-        loginButton =  findViewById(R.id.button);
+        Button loginButton = findViewById(R.id.button);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -33,7 +32,7 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
-        registrationButton = findViewById(R.id.button2);
+        Button registrationButton = findViewById(R.id.button2);
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,7 +43,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         //Use on startup to clear database files in case you messed something up
         //Uncomment, run once to get to welcome screen, close emulator, recomment, start again
-        //Would work without restarting but would redelete everything if you ever come back to welcome
+        //Would work without restarting but would redelete everything if you ever come back to
+        // welcome
         //Only should use if you are having issues with users/shelter lists, or if you want to clear
         //debugClear();
 
@@ -62,9 +62,10 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
     private void debugClear() {
-        String filePath = this.getFilesDir().getPath().toString() + "/user_pass_database.csv";
+        File fileDir = this.getFilesDir();
+        String filePath = fileDir.getPath() + "/user_pass_database.csv";
         File csv = new File(filePath);
-        filePath = this.getFilesDir().getPath().toString() + "/homeless_shelter_database.csv";
+        filePath = fileDir.getPath() + "/homeless_shelter_database.csv";
         File csv2 = new File(filePath);
 
         csv.delete();

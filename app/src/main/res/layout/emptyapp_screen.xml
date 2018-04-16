@@ -29,7 +29,6 @@
         android:layout_marginTop="162dp"
         android:text="@string/homeless_shelter_app"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
-        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

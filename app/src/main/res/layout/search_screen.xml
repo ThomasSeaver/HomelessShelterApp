@@ -12,7 +12,7 @@
         android:layout_height="33dp"
         android:layout_marginBottom="100dp"
         android:layout_marginStart="32dp"
-        android:text="Gender"
+        android:text="@string/gender"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/cancelDone"
@@ -24,7 +24,7 @@
         android:layout_height="31dp"
         android:layout_marginBottom="32dp"
         android:layout_marginStart="32dp"
-        android:text="Age Range"
+        android:text="@string/age_range"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textView9"
@@ -35,7 +35,7 @@
         android:layout_height="31dp"
         android:layout_marginBottom="32dp"
         android:layout_marginStart="32dp"
-        android:text="Name"
+        android:text="@string/name"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/textView8"
@@ -47,7 +47,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="72dp"
-        android:text="Search"
+        android:text="@string/search"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
         android:layout_height="46dp"
         android:layout_marginBottom="100dp"
         android:layout_marginStart="48dp"
-        android:text="Cancel"
+        android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -70,19 +70,20 @@
         android:layout_height="46dp"
         android:layout_marginBottom="100dp"
         android:layout_marginEnd="48dp"
-        android:text="Done"
+        android:text="@string/done"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/shelterNameText"
+        android:labelFor="@+id/shelterNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Shelter Name"
+        android:text="@string/shelter_name"
         app:layout_constraintBottom_toTopOf="@+id/ageRangeSpinner"
         app:layout_constraintEnd_toEndOf="parent" />
 

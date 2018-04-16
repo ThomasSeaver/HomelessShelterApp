@@ -3,6 +3,7 @@ package org.team69.homelessshelterapp.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Button;
@@ -14,13 +15,13 @@ import org.team69.homelessshelterapp.R;
 import java.util.HashMap;
 
 /**
+ * Search activity for users who are searching for specific shelters
+ *
  * Created by obecerra on 3/13/18.
  */
 
 public class SearchActivity extends AppCompatActivity {
 
-    private Button doneButton;
-    private Button cancelButton;
     private EditText shelterName;
     private Spinner ageRange;
     private Spinner gender;
@@ -40,7 +41,8 @@ public class SearchActivity extends AppCompatActivity {
         possibleValues1[1] = "Children";
         possibleValues1[2] = "Young Adults";
         possibleValues1[3] = "Anyone";
-        ArrayAdapter<String> adapter1 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, possibleValues1);
+        ArrayAdapter adapter1 = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, possibleValues1);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ageRange.setAdapter(adapter1);
 
@@ -49,11 +51,12 @@ public class SearchActivity extends AppCompatActivity {
         possibleValues2[0] = "Men";
         possibleValues2[1] = "Women";
         possibleValues2[2] = "N/A";
-        ArrayAdapter<String> adapter2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, possibleValues2);
+        ArrayAdapter adapter2 = new ArrayAdapter(this,
+                android.R.layout.simple_spinner_item, possibleValues2);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gender.setAdapter(adapter2);
 
-        doneButton =  findViewById(R.id.searchDone);
+        Button doneButton = findViewById(R.id.searchDone);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +64,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        cancelButton =  findViewById(R.id.cancelDone);
+        Button cancelButton = findViewById(R.id.cancelDone);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,14 +82,18 @@ public class SearchActivity extends AppCompatActivity {
         String ageval = null;
         String nameval = null;
 
-        if (!"N/A".equals(gender.getSelectedItem().toString())) {
-            genderval = gender.getSelectedItem().toString();
+        Object genderObj = gender.getSelectedItem();
+        if (!"N/A".equals(genderObj.toString())) {
+            genderval = genderObj.toString();
         }
-        if (!"Anyone".equals(ageRange.getSelectedItem().toString())) {
-            ageval = ageRange.getSelectedItem().toString();
+        Object ageObject = ageRange.getSelectedItem();
+        if (!"Anyone".equals(ageObject.toString())) {
+            ageval = ageObject.toString();
         }
-        if (!shelterName.getText().toString().isEmpty()) {
-            nameval = shelterName.getText().toString();
+        Editable shelterObj = shelterName.getText();
+        String shelterData = shelterObj.toString();
+        if (!shelterData.isEmpty()) {
+            nameval = shelterData;
         }
 
         HashMap<String, String> newMap = new HashMap<>();

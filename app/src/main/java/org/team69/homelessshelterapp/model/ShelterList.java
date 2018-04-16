@@ -3,6 +3,7 @@ package org.team69.homelessshelterapp.model;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Shelter list infoholder for list of shelters, provides access to shelters through abstraction,
@@ -62,31 +63,44 @@ public class ShelterList implements java.io.Serializable {
      * @param name   Name constraint; if available, limits shelters to ones containing name variable
      * @return       Hashmap exclusively holding those shelters that match the restrictions
      */
-    public HashMap<String, Shelter> getByRestriction(String gender, String age, String name){
+    public HashMap<String, Shelter> getByRestriction(CharSequence gender, CharSequence age,
+                                                     CharSequence name){
         HashMap<String, Shelter> searchedList = shelters;
         if (!(gender == null)) {
-            for(Iterator<Map.Entry<String, Shelter>> it = searchedList.entrySet().iterator(); it.hasNext(); ) {
+            Set entries = searchedList.entrySet();
+            for(Iterator<Map.Entry<String, Shelter>> it = entries.iterator();
+                it.hasNext(); ) {
                 Map.Entry<String, Shelter> entry = it.next();
                 Shelter shelter = entry.getValue();
-                if (!shelter.getGender().contains(gender) && (shelter.getGender().contains("Men") || shelter.getGender().contains("Women"))){
+                String genderVal = shelter.getGender();
+                if (!genderVal.contains(gender) && (genderVal.contains("Men")
+                        || genderVal.contains("Women"))){
                     it.remove();
                 }
             }
         }
         if (!(age == null)) {
-            for(Iterator<Map.Entry<String, Shelter>> it = searchedList.entrySet().iterator(); it.hasNext(); ) {
+            Set entries = searchedList.entrySet();
+            for(Iterator<Map.Entry<String, Shelter>> it = entries.iterator();
+                it.hasNext(); ) {
                 Map.Entry<String, Shelter> entry = it.next();
                 Shelter shelter = entry.getValue();
-                if (!shelter.getGender().contains(age) && (shelter.getGender().contains("Children") || shelter.getGender().contains("Families w/ newborns") || shelter.getGender().contains("Young adults"))){
+                String genderVal = shelter.getGender();
+                if (!genderVal.contains(age) && (genderVal.contains("Children")
+                        || genderVal.contains("Families w/ newborns")
+                        || genderVal.contains("Young adults"))){
                     it.remove();
                 }
             }
         }
         if (!(name == null)) {
-            for(Iterator<Map.Entry<String, Shelter>> it = searchedList.entrySet().iterator(); it.hasNext(); ) {
+            Set entries = searchedList.entrySet();
+            for(Iterator<Map.Entry<String, Shelter>> it = entries.iterator();
+                it.hasNext(); ) {
                 Map.Entry<String, Shelter> entry = it.next();
                 Shelter shelter = entry.getValue();
-                if (!shelter.getName().contains(name)){
+                String nameVal = shelter.getName();
+                if (!nameVal.contains(name)){
                     it.remove();
                 }
             }

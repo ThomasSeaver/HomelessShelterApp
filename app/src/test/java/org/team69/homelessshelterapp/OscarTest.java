@@ -6,12 +6,10 @@ import org.team69.homelessshelterapp.model.Shelter;
 
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertArrayEquals;
 
 public class OscarTest {
-    Shelter shelter1;
-    Shelter shelter2;
+    private Shelter shelter1;
+    private Shelter shelter2;
 
     @Before
     public void setUp() {

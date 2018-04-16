@@ -3,6 +3,7 @@ package org.team69.homelessshelterapp.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.widget.EditText;
 import android.widget.Button;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.View;
 import com.opencsv.CSVReader;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -21,13 +23,12 @@ import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.User;
 
 /**
+ * Login activity for users who have previously created accounts
  * Created by obecerra on 2/19/18.
  */
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Button doneButton;
-    private Button cancelButton;
     private EditText usernameInput;
     private EditText passwordInput;
     private EditText wrongLogin;
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
         readUserFile();
 
-        doneButton =  findViewById(R.id.button3);
+        Button doneButton = findViewById(R.id.button3);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        cancelButton = findViewById(R.id.button4);
+        Button cancelButton = findViewById(R.id.button4);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +65,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkUserPass() {
-        if (checkUsingFile(usernameInput.getText().toString(), passwordInput.getText().toString())) {
+        Editable userNameObj = usernameInput.getText();
+        Editable passwordObj = passwordInput.getText();
+        if (checkUsingFile(userNameObj.toString(), passwordObj.toString())){
             wrongLogin.setVisibility(View.INVISIBLE);
             Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
             //get the user detail
@@ -83,7 +86,10 @@ public class LoginActivity extends AppCompatActivity {
     private boolean checkUsingFile(String username, String pass) {
         for (Map.Entry<String, User> user : userList.entrySet())
         {
-            if (user.getValue().getUsername().equals(username) && user.getValue().getPassword().equals(pass)) {
+            User value = user.getValue();
+            String checkUserName = value.getUsername();
+            String checkPassword = value.getPassword();
+            if (checkUserName.equals(username) && checkPassword.equals(pass)) {
                 userID = user.getKey();
                 return true;
             }
@@ -94,12 +100,15 @@ public class LoginActivity extends AppCompatActivity {
     private void readUserFile() {
 
         try {
-            String filePath = this.getFilesDir().getPath().toString() + "/user_pass_database.csv";
+            File fileDir = this.getFilesDir();
+            String filePath = fileDir.getPath() + "/user_pass_database.csv";
             Reader reader =  new BufferedReader(new FileReader(filePath));
             CSVReader csvReader = new CSVReader(reader);
             String traits[];
             while ((traits = csvReader.readNext()) != null) {
-                userList.put(traits[0], new User(traits[1], traits[2], traits[3], Integer.parseInt(traits[4])));
+                userList.put(traits[0], new User(traits[1], traits[2], traits[3],
+                        Integer.parseInt(traits[4])));
+
             }
         } catch (IOException e) {
             e.printStackTrace();

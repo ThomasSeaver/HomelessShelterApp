@@ -2,8 +2,10 @@ package org.team69.homelessshelterapp.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -35,14 +37,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Maps activity for holding the google maps view. Creates markers, map, and places them in front
+ * of user with ability to search or return to list.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap viewMap;
     private final ShelterList list = new ShelterList();
-    private HashMap<String, String> restrictionsMap;
+    private Map<String, String> restrictionsMap;
     private String userID;
-    private Button listButton;
-    private Button searchButton;
 
 
     @Override
@@ -53,7 +57,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         restrictionsMap = (HashMap<String, String>) intent.getSerializableExtra("restrictionsMap");
         userID = intent.getStringExtra("userID");
 
-        searchButton =  findViewById(R.id.searchButton);
+        Button searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        listButton =  findViewById(R.id.listButton);
+        Button listButton = findViewById(R.id.listButton);
         listButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +75,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        FragmentManager manager = getSupportFragmentManager();
+        SupportMapFragment mapFragment = (SupportMapFragment) manager
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -82,7 +87,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         viewMap = googleMap;
         //recenter camera initially
+        //Magic numbers here are simply coordinates of atlanta, always will be constants
         LatLng atlanta = new LatLng(33.753, -84.390);
+        //Magic number here is just view necessary for proper view of atlanta and shelters.
         viewMap.moveCamera(CameraUpdateFactory.newLatLngZoom(atlanta, 11));
         viewMap.setInfoWindowAdapter(new ShelterMapAdapter(this));
 
@@ -91,16 +98,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (restrictionsMap == null) {
             makeMarkers(ShelterList.getMap());
         } else {
-            makeMarkers(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")));
+            makeMarkers(list.getByRestriction(restrictionsMap.get("Gender"),
+                    restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")));
         }
     }
 
-    private void makeMarkers(HashMap<String, Shelter> map) {
+    private void makeMarkers(Map<String, Shelter> map) {
         for (Shelter shelter : map.values()) {
-            viewMap.addMarker(new MarkerOptions()
-                    .position(shelter.getCoordinates())
-                    .title(shelter.getName())
-                    .snippet(shelter.getInfo()));
+            MarkerOptions options = new MarkerOptions();
+            options.position(shelter.getCoordinates());
+            options.title(shelter.getName());
+            options.snippet(shelter.getInfo());
+            viewMap.addMarker(options);
         }
     }
 
@@ -126,7 +135,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         @Override
         public View getInfoWindow(Marker marker) {
-            // TODO Auto-generated method stub
             return null;
         }
 
@@ -147,12 +155,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void readShelterFile() {
 
         try {
-            String filePath = this.getFilesDir().getPath().toString() + "/homeless_shelter_database.csv";
+            File fileDir = this.getFilesDir();
+            String filePath = fileDir.getPath() + "/homeless_shelter_database.csv";
             File csv = new File(filePath);
             if (!csv.exists()) {
                 try {
-                    InputStream is = getResources().openRawResource(R.raw.homeless_shelter_database);
-                    BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+                    Resources resources = getResources();
+                    InputStream is = resources
+                            .openRawResource(R.raw.homeless_shelter_database);
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(is, StandardCharsets.UTF_8));
                     String line;
                     br.readLine();
                     while ((line = br.readLine()) != null) {
@@ -160,11 +172,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         for (int i = 0; i < traits.length; i++) {
                             if((traits[i] == null) || traits[i].isEmpty()) {
                                 traits[i] = "Not available";
-                            } else if ((traits[i].charAt(0) == '"') && (traits[i].charAt(traits[i].length() - 1) == '"')){
+                            } else if ((traits[i].charAt(0) == '"')
+                                    && (traits[i].charAt(traits[i].length() - 1) == '"')){
                                 traits[i] = traits[i].substring(1, traits[i].length() - 1);
                             }
                         }
-                        list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[8], (traits.length > 9) ? traits[9] : "Not available"));
+                        list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3],
+                                traits[4], traits[5], traits[6], traits[8],
+                                (traits.length > 9) ? traits[9] : "Not available"));
                     }
                     br.close();
                 } catch (IOException e) {
@@ -173,10 +188,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 try {
                     //make writer, append set to true
                     CSVWriter writer = new CSVWriter(new FileWriter(filePath));
-                    for (Map.Entry<String, Shelter> shelter : ShelterList.getMap().entrySet())
+                    String regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+                    Map<String, Shelter> map = ShelterList.getMap();
+                    for (Map.Entry<String, Shelter> shelter : map.entrySet())
                     {
+                        Shelter value = shelter.getValue();
                         //form
-                        String [] record = (shelter.getKey() + "," + shelter.getValue().getRecord()).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                        String [] record = (shelter.getKey() + ","
+                                + value.getRecord()).split(regex);
                         writer.writeNext(record);
                     }
                     writer.close();
@@ -190,7 +209,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 CSVReader csvReader = new CSVReader(reader);
                 String traits[];
                 while ((traits = csvReader.readNext()) != null) {
-                    list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[7], (traits.length > 8) ? traits[8] : "Not available"));
+                    list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3],
+                            traits[4], traits[5], traits[6], traits[7],
+                            (traits.length > 8) ? traits[8] : "Not available"));
                 }
             }
         } catch (IOException e) {

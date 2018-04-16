@@ -12,7 +12,8 @@ import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.Shelter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * View adapter for detail list within shelterlist, allowing users to click directly on a shelter
@@ -22,7 +23,7 @@ import java.util.HashMap;
  */
 
 public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.ViewHolder> {
-    private static ArrayList<Shelter> shelterList;
+    private static List<Shelter> shelterList;
     private final String userID;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,14 +74,16 @@ public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.
      * @param shelterList List of shelters
      * @param userID      userID of currently logged in user
      */
-    public ShelterListAdapter(HashMap<String, Shelter> shelterList, String userID) {
+    public ShelterListAdapter(Map<String, Shelter> shelterList, String userID) {
         this.userID = userID;
         ShelterListAdapter.shelterList = new ArrayList<>(shelterList.values());
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycler_text_row, viewGroup, false);
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View v = inflater.inflate(R.layout.recycler_text_row,
+                viewGroup, false);
 
         return new ViewHolder(v, this);
     }

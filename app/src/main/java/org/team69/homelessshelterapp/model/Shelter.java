@@ -32,7 +32,8 @@ public class Shelter implements java.io.Serializable{
      * @param phoneNumber to contact shelter
      * @param claimedRooms to know how many beds are free
      */
-    public Shelter(String name, String capacity, String gender, String longitude, String latitude, String address, String phoneNumber, String claimedRooms) {
+    public Shelter(String name, String capacity, String gender, String longitude, String latitude,
+                   String address, String phoneNumber, String claimedRooms) {
         this.name = name;
         this.capacity = capacity;
         this.gender = gender;
@@ -65,25 +66,25 @@ public class Shelter implements java.io.Serializable{
      *
      * @return the longitude
      */
-    public String getLongitude() {return longitude; }
+    public CharSequence getLongitude() {return longitude; }
 
     /**
      *
      * @return the latitude
      */
-    public String getLatitude() {return latitude; }
+    public CharSequence getLatitude() {return latitude; }
 
     /**
      *
      * @return the address
      */
-    public String getAddress() {return address; }
+    public CharSequence getAddress() {return address; }
 
     /**
      *
      * @return the phone number
      */
-    public String getPhoneNumber() {return phoneNumber; }
+    public CharSequence getPhoneNumber() {return phoneNumber; }
 
     /**
      *

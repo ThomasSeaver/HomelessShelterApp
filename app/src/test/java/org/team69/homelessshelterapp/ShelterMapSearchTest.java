@@ -6,6 +6,7 @@ import org.team69.homelessshelterapp.model.Shelter;
 import org.team69.homelessshelterapp.model.ShelterList;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -18,11 +19,11 @@ import static org.junit.Assert.*;
 
 public class ShelterMapSearchTest {
     private ShelterList list;
-    private HashMap<String, Shelter> maleSearch;
-    private HashMap<String, Shelter> femaleSearch;
-    private HashMap<String, Shelter> childSearch;
-    private HashMap<String, Shelter> familySearch;
-    private HashMap<String, Shelter> youngAdultSearch;
+    private Map<String, Shelter> maleSearch;
+    private Map<String, Shelter> femaleSearch;
+    private Map<String, Shelter> childSearch;
+    private Map<String, Shelter> familySearch;
+    private Map<String, Shelter> youngAdultSearch;
     //private HashMap<String, Shelter> unspecifiedSearch;
 
     @Before

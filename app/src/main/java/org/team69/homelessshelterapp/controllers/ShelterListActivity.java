@@ -1,6 +1,7 @@
 package org.team69.homelessshelterapp.controllers;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,20 +26,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * List of shelters activity; holds individual shelter buttons in list for users to press to go
+ * to detail activity to receive more individual information about shelters
  * Created by TomStuff on 3/6/18.
  */
 
 public class ShelterListActivity extends AppCompatActivity {
 
-    private Button logoutButton;
-    private Button seachButton;
-    private Button mapButton;
-    private RecyclerView listView;
-    private HashMap<String, String> restrictionsMap;
     private final ShelterList list = new ShelterList();
     private String userID;
 
@@ -48,7 +45,7 @@ public class ShelterListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shelterlist_screen);
 
-        logoutButton =  findViewById(R.id.logoutButton);
+        Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +53,7 @@ public class ShelterListActivity extends AppCompatActivity {
             }
         });
 
-        seachButton =  findViewById(R.id.searchButton);
+        Button seachButton = findViewById(R.id.searchButton);
         seachButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +61,7 @@ public class ShelterListActivity extends AppCompatActivity {
             }
         });
 
-        mapButton = findViewById(R.id.showMap);
+        Button mapButton = findViewById(R.id.showMap);
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,9 +70,11 @@ public class ShelterListActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        restrictionsMap = (HashMap<String, String>) intent.getSerializableExtra("restrictionsMap");
+        Map<String, String> restrictionsMap = (Map<String, String>)
+                intent.getSerializableExtra("restrictionsMap");
         userID = intent.getStringExtra("userID");
 
+        RecyclerView listView;
         if (restrictionsMap == null) {
             //copy shelter files into shelterlist and shelter models
             readShelterFile();
@@ -104,7 +103,10 @@ public class ShelterListActivity extends AppCompatActivity {
             listView.setLayoutManager(layout);
 
             //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")), userID);
+            ShelterListAdapter adapter = new ShelterListAdapter(
+                    list.getByRestriction(restrictionsMap.get("Gender"),
+                            restrictionsMap.get("AgeRange"),
+                            restrictionsMap.get("ShelterName")), userID);
             listView.setAdapter(adapter);
         }
     }
@@ -129,12 +131,15 @@ public class ShelterListActivity extends AppCompatActivity {
     private void readShelterFile() {
 
         try {
-            String filePath = this.getFilesDir().getPath().toString() + "/homeless_shelter_database.csv";
+            File fileDir = this.getFilesDir();
+            String filePath = fileDir.getPath() + "/homeless_shelter_database.csv";
             File csv = new File(filePath);
             if (!csv.exists()) {
                 try {
-                    InputStream is = getResources().openRawResource(R.raw.homeless_shelter_database);
-                    BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+                    Resources resources = getResources();
+                    InputStream is = resources.openRawResource(R.raw.homeless_shelter_database);
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(is, StandardCharsets.UTF_8));
                     String line;
                     br.readLine();
                     while ((line = br.readLine()) != null) {
@@ -142,11 +147,14 @@ public class ShelterListActivity extends AppCompatActivity {
                         for (int i = 0; i < traits.length; i++) {
                             if((traits[i] == null) || traits[i].isEmpty()) {
                                 traits[i] = "Not available";
-                            } else if ((traits[i].charAt(0) == '"') && (traits[i].charAt(traits[i].length() - 1) == '"')){
+                            } else if ((traits[i].charAt(0) == '"')
+                                    && (traits[i].charAt(traits[i].length() - 1) == '"')){
                                 traits[i] = traits[i].substring(1, traits[i].length() - 1);
                             }
                         }
-                        list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[8], (traits.length > 9) ? traits[9] : "Not available"));
+                        list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3],
+                                traits[4], traits[5], traits[6], traits[8],
+                                (traits.length > 9) ? traits[9] : "Not available"));
                     }
                     br.close();
                 } catch (IOException e) {
@@ -155,10 +163,14 @@ public class ShelterListActivity extends AppCompatActivity {
                 try {
                     //make writer, append set to true
                     CSVWriter writer = new CSVWriter(new FileWriter(filePath));
-                    for (Map.Entry<String, Shelter> shelter : ShelterList.getMap().entrySet())
+                    String regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+                    Map<String, Shelter> shelterMap = ShelterList.getMap();
+                    for (Map.Entry<String, Shelter> shelter : shelterMap.entrySet())
                     {
                         //form
-                        String [] record = (shelter.getKey() + "," + shelter.getValue().getRecord()).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                        Shelter value = shelter.getValue();
+                        String [] record = (shelter.getKey() + ","
+                                + value.getRecord()).split(regex);
                         writer.writeNext(record);
                     }
                     writer.close();
@@ -172,7 +184,9 @@ public class ShelterListActivity extends AppCompatActivity {
                 CSVReader csvReader = new CSVReader(reader);
                 String traits[];
                 while ((traits = csvReader.readNext()) != null) {
-                    list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[7], (traits.length > 8) ? traits[8] : "Not available"));
+                    list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3],
+                            traits[4], traits[5], traits[6], traits[7],
+                            (traits.length > 8) ? traits[8] : "Not available"));
                 }
             }
         } catch (IOException e) {

@@ -24,12 +24,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
 
 /**
+ * Detail activity created for individual shelters when list is pressed for single shelter info
  * Created by TomStuff on 3/6/18.
  */
 
@@ -37,8 +37,6 @@ public class DetailActivity extends AppCompatActivity {
 
     private static int shelterNum;
     private Shelter shelter;
-    private Button cancelButton;
-    private Button doneButton;
     private TextView shelterFullError;
     private TextView onlyOneShelterError;
     private String userID;
@@ -59,7 +57,7 @@ public class DetailActivity extends AppCompatActivity {
         onlyOneShelterError = findViewById(R.id.onlyOneShelterError);
         onlyOneShelterError.setVisibility(View.INVISIBLE);
 
-        doneButton = findViewById(R.id.doneButton);
+        Button doneButton = findViewById(R.id.doneButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +65,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        cancelButton = findViewById(R.id.cancelButton);
+        Button cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,13 +79,11 @@ public class DetailActivity extends AppCompatActivity {
         Log.d("shelterNum", String.valueOf(shelterNum));
         //subtract by 2 because initial pos is 2 higher than it should be im not sure why
         shelterNum -= 2;
-        int endList = 12;
-        int secondEndList = 11;
         if(shelterNum == -1) {
-            shelterNum = endList;
+            shelterNum = 12;
         }
         if(shelterNum == -2) {
-            shelterNum = secondEndList;
+            shelterNum = 11;
         }
         Log.d("shelterNum", String.valueOf(shelterNum));
         userID = intent.getStringExtra("userID");
@@ -109,7 +105,9 @@ public class DetailActivity extends AppCompatActivity {
         TextView address = findViewById(R.id.addressValue);
         TextView phoneNum = findViewById(R.id.phoneNumberValue);
 
-        String curCapacity = "Not available".equals(shelter.getCapacity()) ? shelter.getCapacity() : String.valueOf(Integer.parseInt(shelter.getCapacity()) - Integer.parseInt(shelter.getClaimedRooms()));
+        String curCapacity = "Not available".equals(shelter.getCapacity())
+                ? shelter.getCapacity() : String.valueOf(Integer.parseInt(shelter.getCapacity())
+                - Integer.parseInt(shelter.getClaimedRooms()));
 
         shelterName.setText(shelter.getName());
         capacity.setText(curCapacity);
@@ -187,14 +185,20 @@ public class DetailActivity extends AppCompatActivity {
             String filePath = fileDir.getPath() + "/homeless_shelter_database.csv";
             //make writer
             CSVWriter writer = new CSVWriter(new FileWriter(filePath));
-            for (Map.Entry<String, Shelter> shelter : ShelterList.getMap().entrySet())
+            String regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+            Map<String, Shelter> map = ShelterList.getMap();
+            for (Map.Entry<String, Shelter> shelter : map.entrySet())
             {
-                if (String.valueOf(shelterNum).equals(shelter.getKey())) {
-                    String[] record = (String.valueOf(shelterNum) + "," + shelterChange.getRecord()).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                String shelterID = String.valueOf(shelterNum);
+                Shelter value = shelter.getValue();
+                if (shelterID.equals(shelter.getKey())) {
+                    String[] record = (shelterID + ","
+                            + shelterChange.getRecord()).split(regex);
                     writer.writeNext(record);
 
                 } else {
-                    String[] record = (shelter.getKey() + "," + shelter.getValue().getRecord()).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                    String[] record = (shelter.getKey() + ","
+                            + value.getRecord()).split(regex);
                     writer.writeNext(record);
                 }
             }
@@ -210,18 +214,26 @@ public class DetailActivity extends AppCompatActivity {
     private void writeNewUserInfo() {
         try {
             //get file in memory
-            String filePath = this.getFilesDir().getPath().toString() + "/user_pass_database.csv";
+            File fileDir = this.getFilesDir();
+            String filePath = fileDir.getPath() + "/user_pass_database.csv";
             //make writer, append set to true
             CSVWriter writer = new CSVWriter(new FileWriter(filePath));
             for (Map.Entry<String, User> user : userList.entrySet())
             {
-                if (user.getKey().equals(userID)) {
+                String key = user.getKey();
+                if (key.equals(userID)) {
                     //form
-                    String [] record = (String.valueOf(userID) + "," + theUser.getUsername() + "," + theUser.getPassword() + "," + theUser.getShelterClaimedID() + "," + theUser.getBedsClaimed()).split(",");
+                    String [] record = (String.valueOf(userID) + "," + theUser.getUsername() + ","
+                            + theUser.getPassword() + "," + theUser.getShelterClaimedID() + ","
+                            + theUser.getBedsClaimed()).split(",");
                     writer.writeNext(record);
                 } else {
                     //form
-                    String [] record = (user.getKey() + "," + user.getValue().getUsername() + "," + user.getValue().getPassword() + "," + user.getValue().getShelterClaimedID() + "," + user.getValue().getBedsClaimed()).split(",");
+                    User value = user.getValue();
+                    String [] record = (user.getKey() + "," + value.getUsername() + ","
+                            + value.getPassword() + ","
+                            + value.getShelterClaimedID() + ","
+                            + value.getBedsClaimed()).split(",");
                     writer.writeNext(record);
                 }
             }
@@ -235,12 +247,14 @@ public class DetailActivity extends AppCompatActivity {
     private void readUserFile() {
 
         try {
-            String filePath = this.getFilesDir().getPath().toString() + "/user_pass_database.csv";
+            File fileDir = this.getFilesDir();
+            String filePath = fileDir.getPath() + "/user_pass_database.csv";
             Reader reader =  new BufferedReader(new FileReader(filePath));
             CSVReader csvReader = new CSVReader(reader);
             String traits[];
             while ((traits = csvReader.readNext()) != null) {
-                userList.put(traits[0], new User(traits[1], traits[2], traits[3], Integer.parseInt(traits[4])));
+                userList.put(traits[0], new User(traits[1], traits[2], traits[3],
+                        Integer.parseInt(traits[4])));
 
             }
         } catch (IOException e) {
@@ -250,13 +264,16 @@ public class DetailActivity extends AppCompatActivity {
     private void readShelterFile() {
 
         try {
-            String filePath = this.getFilesDir().getPath().toString() + "/homeless_shelter_database.csv";
+            File fileDir = this.getFilesDir();
+            String filePath = fileDir.getPath() + "/homeless_shelter_database.csv";
             File csv = new File(filePath);
             Reader reader =  new BufferedReader(new FileReader(csv.getPath()));
             CSVReader csvReader = new CSVReader(reader);
             String traits[];
             while ((traits = csvReader.readNext()) != null) {
-                list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[7], (traits.length > 8) ? traits[8] : "Not available"));
+                list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4],
+                        traits[5], traits[6], traits[7],
+                        (traits.length > 8) ? traits[8] : "Not available"));
             }
         } catch (IOException e) {
             e.printStackTrace();

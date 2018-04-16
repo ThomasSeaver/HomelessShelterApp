@@ -7,23 +7,20 @@ import android.view.View;
 import android.widget.Button;
 
 import org.team69.homelessshelterapp.R;
-import org.team69.homelessshelterapp.model.User;
 
 /**
+ * Old empty app activity back when was features were not implemented
  * Created by obecerra on 2/19/18.
  */
 
 public class EmptyAppActivity extends AppCompatActivity {
-
-    private Button logoutButton;
-    private User theUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.emptyapp_screen);
 
-        logoutButton =  findViewById(R.id.button5);
+        Button logoutButton = findViewById(R.id.button5);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,8 +28,6 @@ public class EmptyAppActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        theUser = (User) intent.getSerializableExtra("theUser");
     }
 
     private void goToLogin() {
