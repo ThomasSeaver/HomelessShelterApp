@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 
 import org.team69.homelessshelterapp.R;
-import org.team69.homelessshelterapp.model.UserPassMap;
 
 import java.io.File;
 import java.util.HashMap;

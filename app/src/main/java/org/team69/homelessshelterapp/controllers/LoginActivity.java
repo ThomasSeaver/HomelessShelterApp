@@ -18,8 +18,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.team69.homelessshelterapp.R;
-import org.team69.homelessshelterapp.model.Shelter;
-import org.team69.homelessshelterapp.model.ShelterList;
 import org.team69.homelessshelterapp.model.User;
 
 /**

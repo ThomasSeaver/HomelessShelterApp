@@ -5,8 +5,6 @@ import org.team69.homelessshelterapp.model.Shelter;
 import org.team69.homelessshelterapp.model.ShelterList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertArrayEquals;
 
 public class ParkerTest {
     private Shelter shelter1;

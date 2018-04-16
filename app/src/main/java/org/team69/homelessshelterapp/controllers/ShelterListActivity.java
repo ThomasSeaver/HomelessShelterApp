@@ -15,7 +15,6 @@ import com.opencsv.CSVWriter;
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.Shelter;
 import org.team69.homelessshelterapp.model.ShelterList;
-import org.team69.homelessshelterapp.model.User;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,7 +35,7 @@ import java.util.Map;
 public class ShelterListActivity extends AppCompatActivity {
 
     private Button logoutButton;
-    private Button seachButton;
+    private Button searchButton;
     private Button mapButton;
     private RecyclerView listView;
     private HashMap<String, String> theMap;
@@ -58,8 +57,8 @@ public class ShelterListActivity extends AppCompatActivity {
             }
         });
 
-        seachButton =  findViewById(R.id.searchButton);
-        seachButton.setOnClickListener(new View.OnClickListener() {
+        searchButton =  findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToSearch();

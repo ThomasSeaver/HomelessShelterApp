@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Spinner;
 
 import org.team69.homelessshelterapp.R;
-import org.team69.homelessshelterapp.model.User;
 
 import java.util.HashMap;
 
