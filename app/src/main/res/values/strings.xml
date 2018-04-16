@@ -15,6 +15,9 @@
     <string name="number_of_beds">Number of Beds:</string>
     <string name="no_vacancies">No vacancies left.</string>
     <string name="one_shelter_only">Cannot reserve in multiple shelters.</string>
-
+    <string name="title_activity_maps">Map</string>
+    <string name="return_to_search">Search</string>
+    <string name="return_to_list">Return to list</string>
+    <string name="show_map">Show map</string>
 
 </resources>

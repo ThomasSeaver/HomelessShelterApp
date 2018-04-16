@@ -1,21 +1,27 @@
 package org.team69.homelessshelterapp.controllers;
 
+import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.Shelter;
 import org.team69.homelessshelterapp.model.ShelterList;
-import org.team69.homelessshelterapp.model.User;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,101 +35,110 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by TomStuff on 3/6/18.
- */
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-public class ShelterListActivity extends AppCompatActivity {
-
-    private Button logoutButton;
-    private Button seachButton;
-    private Button mapButton;
-    private RecyclerView listView;
-    private HashMap<String, String> theMap;
-    private HashMap<String, String> restrictionsMap;
+    private GoogleMap viewMap;
     private ShelterList list = new ShelterList();
+    private HashMap<String, String> restrictionsMap;
     private String userID;
+    private Button listButton;
+    private Button searchButton;
 
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.shelterlist_screen);
-
-        logoutButton =  findViewById(R.id.logoutButton);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                goToLogin();
-            }
-        });
-
-        seachButton =  findViewById(R.id.searchButton);
-        seachButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                goToSearch();
-            }
-        });
-
-        mapButton = findViewById(R.id.showMap);
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                goToMap();
-            }
-        });
-
+        setContentView(R.layout.activity_maps);
         Intent intent = getIntent();
-        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
         restrictionsMap = (HashMap<String, String>) intent.getSerializableExtra("restrictionsMap");
         userID = intent.getStringExtra("userID");
 
+        searchButton =  findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                backToSearchActivity();
+            }
+        });
+
+        listButton =  findViewById(R.id.listButton);
+        listButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                backToShelterListActivity();
+            }
+        });
+
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        viewMap = googleMap;
+        //recenter camera initially
+        LatLng atlanta = new LatLng(33.753, -84.390);
+        viewMap.moveCamera(CameraUpdateFactory.newLatLngZoom(atlanta, 11));
+        viewMap.setInfoWindowAdapter(new ShelterMapAdapter(this));
+
+        //read shelter file then create shelter markers
+        readShelterFile();
         if (restrictionsMap == null) {
-            //copy shelter files into shelterlist and shelter models
-            readShelterFile();
-
-            //get handle for shelter recycler view
-            listView = findViewById(R.id.listShelters);
-            listView.setHasFixedSize(true); //increases performance
-
-            //set layout
-            LinearLayoutManager layout = new LinearLayoutManager(this);
-            listView.setLayoutManager(layout);
-
-            //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(list.getMap(), theMap, userID);
-            listView.setAdapter(adapter);
+            makeMarkers(list.getMap());
         } else {
-            //copy shelter files into shelterlist and shelter models
-            readShelterFile();
-
-            //get handle for shelter recycler view
-            listView = findViewById(R.id.listShelters);
-            listView.setHasFixedSize(true); //increases performance
-
-            //set layout
-            LinearLayoutManager layout = new LinearLayoutManager(this);
-            listView.setLayoutManager(layout);
-
-            //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")), theMap, userID);
-            listView.setAdapter(adapter);
+            makeMarkers(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")));
         }
     }
 
-    private void goToMap() {
-        Intent intent = new Intent(getBaseContext(), MapsActivity.class);
+    private void makeMarkers(HashMap<String, Shelter> map) {
+        for (Shelter shelter : map.values()) {
+            viewMap.addMarker(new MarkerOptions()
+                    .position(shelter.getCoordinates())
+                    .title(shelter.getName())
+                    .snippet(shelter.getInfo()));
+        }
+    }
+
+    class ShelterMapAdapter implements GoogleMap.InfoWindowAdapter{
+
+        private final View shelterView;
+
+        ShelterMapAdapter(Context context){
+            LayoutInflater inflater = LayoutInflater.from(context);
+            shelterView = inflater.inflate(R.layout.map_info_contents, null);
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+
+            TextView title = ((TextView)shelterView.findViewById(R.id.title));
+            title.setText(marker.getTitle());
+            TextView info = ((TextView)shelterView.findViewById(R.id.info));
+            info.setText(marker.getSnippet());
+
+            return shelterView;
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+    }
+
+    private void backToShelterListActivity() {
+        Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
 
-    private void goToSearch() {
+    private void backToSearchActivity() {
         Intent intent = new Intent(getBaseContext(), SearchActivity.class);
-        intent.putExtra("map", theMap);
         intent.putExtra("userID", userID);
-        startActivity(intent);
-    }
-
-    private void goToLogin() {
-        Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
-        intent.putExtra("map", theMap);
         startActivity(intent);
     }
 

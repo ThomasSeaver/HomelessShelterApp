@@ -36,7 +36,6 @@ public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.
                 public void onClick(View view) {
                     final Intent intent;
                     intent =  new Intent(context, DetailActivity.class);
-                    intent.putExtra("shelterList", shelterList);
                     intent.putExtra("shelterNum", position);
                     intent.putExtra("map", adapter.theMap);
                     intent.putExtra("userID", adapter.userID);
