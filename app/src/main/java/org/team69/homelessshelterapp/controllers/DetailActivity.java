@@ -3,6 +3,7 @@ package org.team69.homelessshelterapp.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,13 +23,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -41,7 +38,6 @@ public class DetailActivity extends AppCompatActivity {
     private static int shelterNum;
     private Shelter shelter;
     private Button cancelButton;
-    private HashMap<String, String> theMap;
     private Button doneButton;
     private TextView shelterFullError;
     private TextView onlyOneShelterError;
@@ -80,14 +76,19 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
         //should be able to just use this as an int but comes out null I don't know intents what lol
         shelterNum = (int) intent.getSerializableExtra("shelterNum");
         Log.d("shelterNum", String.valueOf(shelterNum));
         //subtract by 2 because initial pos is 2 higher than it should be im not sure why
         shelterNum -= 2;
-        if(shelterNum == -1) shelterNum = 12;
-        if(shelterNum == -2) shelterNum = 11;
+        int endList = 12;
+        int secondEndList = 11;
+        if(shelterNum == -1) {
+            shelterNum = endList;
+        }
+        if(shelterNum == -2) {
+            shelterNum = secondEndList;
+        }
         Log.d("shelterNum", String.valueOf(shelterNum));
         userID = intent.getStringExtra("userID");
         readShelterFile();
@@ -108,7 +109,7 @@ public class DetailActivity extends AppCompatActivity {
         TextView address = findViewById(R.id.addressValue);
         TextView phoneNum = findViewById(R.id.phoneNumberValue);
 
-        String curCapacity = shelter.getCapacity().equals("Not available") ? shelter.getCapacity() : String.valueOf(Integer.parseInt(shelter.getCapacity()) - Integer.parseInt(shelter.getClaimedRooms()));
+        String curCapacity = "Not available".equals(shelter.getCapacity()) ? shelter.getCapacity() : String.valueOf(Integer.parseInt(shelter.getCapacity()) - Integer.parseInt(shelter.getClaimedRooms()));
 
         shelterName.setText(shelter.getName());
         capacity.setText(curCapacity);
@@ -122,23 +123,24 @@ public class DetailActivity extends AppCompatActivity {
 
     private void goBackToShelterList() {
         Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
-        intent.putExtra("map", theMap);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
 
     private void checkDone() {
         //check if user already has beds claimed (check where they have them claimed)
-        if (!theUser.getShelterClaimedID().equals(String.valueOf(shelterNum))
-                && (!theUser.getShelterClaimedID().equals("-1"))
-                && Integer.parseInt(bedsToClaim.getText().toString()) != 0) {
+        String shelterID = theUser.getShelterClaimedID();
+        Editable bedsClaiming = bedsToClaim.getText();
+        if (!shelterID.equals(String.valueOf(shelterNum))
+                && (!"-1".equals(theUser.getShelterClaimedID()))
+                && (Integer.parseInt(bedsClaiming.toString()) != 0)) {
             shelterFullError.setVisibility(View.INVISIBLE);
             onlyOneShelterError.setVisibility(View.VISIBLE);
             return;
         }
 
         //check if shelter has no capacity specified
-        if (shelter.getCapacity().equals("Not available")) {
+        if ("Not available".equals(shelter.getCapacity())) {
             shelterFullError.setVisibility(View.VISIBLE);
             onlyOneShelterError.setVisibility(View.INVISIBLE);
             return;
@@ -148,14 +150,14 @@ public class DetailActivity extends AppCompatActivity {
         int vacancy = Integer.parseInt(shelter.getCapacity())
                 - Integer.parseInt(shelter.getClaimedRooms());
 
-        if (Integer.parseInt(bedsToClaim.getText().toString()) > vacancy) {
+        if (Integer.parseInt(bedsClaiming.toString()) > vacancy) {
             shelterFullError.setVisibility(View.VISIBLE);
             onlyOneShelterError.setVisibility(View.INVISIBLE);
             return;
         }
 
         //update this shelters vacancy if no errors and the user
-        if (Integer.parseInt(bedsToClaim.getText().toString()) == 0) {
+        if (Integer.parseInt(bedsClaiming.toString()) == 0) {
             shelter.releaseRooms(theUser.getBedsClaimed());
             theUser.setBedsClaimed(0);
             theUser.setShelterClaimedID("-1");
@@ -164,14 +166,14 @@ public class DetailActivity extends AppCompatActivity {
             goBackToShelterList();
         } else {
             int curClaim = theUser.getBedsClaimed();
-            if (curClaim < Integer.parseInt(bedsToClaim.getText().toString())) {
-                int toClaim = Integer.parseInt(bedsToClaim.getText().toString()) - curClaim;
+            if (curClaim < Integer.parseInt(bedsClaiming.toString())) {
+                int toClaim = Integer.parseInt(bedsClaiming.toString()) - curClaim;
                 shelter.claimRooms(toClaim);
-            } else if (curClaim > Integer.parseInt(bedsToClaim.getText().toString())){
-                int toRelease = curClaim - Integer.parseInt(bedsToClaim.getText().toString());
+            } else if (curClaim > Integer.parseInt(bedsClaiming.toString())){
+                int toRelease = curClaim - Integer.parseInt(bedsClaiming.toString());
                 shelter.releaseRooms(toRelease);
             }
-            theUser.setBedsClaimed(Integer.parseInt(bedsToClaim.getText().toString()));
+            theUser.setBedsClaimed(Integer.parseInt(bedsClaiming.toString()));
             theUser.setShelterClaimedID(String.valueOf(shelterNum));
             writeNewShelterInfo(shelter);
             writeNewUserInfo();
@@ -181,7 +183,8 @@ public class DetailActivity extends AppCompatActivity {
 
     private void writeNewShelterInfo(Shelter shelterChange) {
         try {
-            String filePath = this.getFilesDir().getPath().toString() + "/homeless_shelter_database.csv";
+            File fileDir = this.getFilesDir();
+            String filePath = fileDir.getPath() + "/homeless_shelter_database.csv";
             //make writer
             CSVWriter writer = new CSVWriter(new FileWriter(filePath));
             for (Map.Entry<String, Shelter> shelter : ShelterList.getMap().entrySet())
@@ -253,7 +256,7 @@ public class DetailActivity extends AppCompatActivity {
             CSVReader csvReader = new CSVReader(reader);
             String traits[];
             while ((traits = csvReader.readNext()) != null) {
-                list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[7], traits.length > 8 ? traits[8] : "Not available"));
+                list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[7], (traits.length > 8) ? traits[8] : "Not available"));
             }
         } catch (IOException e) {
             e.printStackTrace();

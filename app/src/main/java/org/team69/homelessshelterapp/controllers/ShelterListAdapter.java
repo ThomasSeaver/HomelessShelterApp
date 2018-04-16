@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * View adapter for detail list within shelterlist, allowing users to click directly on a shelter
+ * and be taken to a specific detail view
+ *
  * Created by TomStuff on 3/6/18.
  */
 
 public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.ViewHolder> {
     private static ArrayList<Shelter> shelterList;
-    private final HashMap<String, String> theMap;
     private final String userID;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -29,6 +31,12 @@ public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.
         private int position;
 
 
+        /**
+         * Creates view holder of individual text rows
+         *
+         * @param view    view that I want to manipulate, specifically this super view holder
+         * @param adapter adapter that I'm using, this newly created class itself
+         */
         public ViewHolder(View view, final ShelterListAdapter adapter) {
             super(view);
             context = itemView.getContext();
@@ -38,7 +46,6 @@ public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.
                     final Intent intent;
                     intent =  new Intent(context, DetailActivity.class);
                     intent.putExtra("shelterNum", position);
-                    intent.putExtra("map", adapter.theMap);
                     intent.putExtra("userID", adapter.userID);
                     context.startActivity(intent);
                 }
@@ -46,6 +53,12 @@ public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.
             textView = view.findViewById(R.id.text_row);
         }
 
+        /**
+         * Binds data to the individual text views, just adding the name of the shelter to the rows
+         *
+         * @param shelter  shelter that this row works for, just using it for name
+         * @param position position within list, setting position within view holder instance
+         */
         public void bindData(Shelter shelter, int position) {
             textView.setText(shelter.getName());
             this.position = position;
@@ -53,8 +66,14 @@ public class ShelterListAdapter extends RecyclerView.Adapter<ShelterListAdapter.
 
     }
 
-    public ShelterListAdapter(HashMap<String, Shelter> shelterList, HashMap<String, String> theMap, String userID) {
-        this.theMap = theMap;
+    /**
+     * Creates shelterlist adapter for this nested class view holder. Carries through persistent
+     * data, like userID and shelterlist
+     *
+     * @param shelterList List of shelters
+     * @param userID      userID of currently logged in user
+     */
+    public ShelterListAdapter(HashMap<String, Shelter> shelterList, String userID) {
         this.userID = userID;
         ShelterListAdapter.shelterList = new ArrayList<>(shelterList.values());
     }

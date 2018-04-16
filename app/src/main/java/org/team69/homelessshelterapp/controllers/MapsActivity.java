@@ -158,16 +158,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     while ((line = br.readLine()) != null) {
                         String[] traits = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                         for (int i = 0; i < traits.length; i++) {
-                            if(traits[i] == null || traits[i].length() == 0) {
+                            if((traits[i] == null) || traits[i].isEmpty()) {
                                 traits[i] = "Not available";
-                            } else if (traits[i].charAt(0) == '"' && traits[i].charAt(traits[i].length() - 1) == '"'){
+                            } else if ((traits[i].charAt(0) == '"') && (traits[i].charAt(traits[i].length() - 1) == '"')){
                                 traits[i] = traits[i].substring(1, traits[i].length() - 1);
                             }
                         }
-                        list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[8], traits.length > 9 ? traits[9] : "Not available"));
+                        list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[8], (traits.length > 9) ? traits[9] : "Not available"));
                     }
                     br.close();
                 } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 try {
                     //make writer, append set to true
@@ -189,7 +190,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 CSVReader csvReader = new CSVReader(reader);
                 String traits[];
                 while ((traits = csvReader.readNext()) != null) {
-                    list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[7], traits.length > 8 ? traits[8] : "Not available"));
+                    list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[7], (traits.length > 8) ? traits[8] : "Not available"));
                 }
             }
         } catch (IOException e) {

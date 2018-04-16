@@ -18,8 +18,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 import org.team69.homelessshelterapp.R;
-import org.team69.homelessshelterapp.model.Shelter;
-import org.team69.homelessshelterapp.model.ShelterList;
 import org.team69.homelessshelterapp.model.User;
 
 /**
@@ -33,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameInput;
     private EditText passwordInput;
     private EditText wrongLogin;
-    private HashMap<String, String> theMap;
     private final Map<String, User> userList = new HashMap<>();
     private String userID;
 
@@ -64,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.passBox);
         wrongLogin = findViewById(R.id.wrongLoginText);
 
-        Intent intent = getIntent();
-        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
 
     private void checkUserPass() {
@@ -82,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void goBackToWelcome() {
         Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
-        intent.putExtra("map", theMap);
         startActivity(intent);
     }
 

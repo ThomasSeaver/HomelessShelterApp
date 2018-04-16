@@ -15,7 +15,6 @@ import com.opencsv.CSVWriter;
 import org.team69.homelessshelterapp.R;
 import org.team69.homelessshelterapp.model.Shelter;
 import org.team69.homelessshelterapp.model.ShelterList;
-import org.team69.homelessshelterapp.model.User;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,7 +38,6 @@ public class ShelterListActivity extends AppCompatActivity {
     private Button seachButton;
     private Button mapButton;
     private RecyclerView listView;
-    private HashMap<String, String> theMap;
     private HashMap<String, String> restrictionsMap;
     private final ShelterList list = new ShelterList();
     private String userID;
@@ -75,7 +73,6 @@ public class ShelterListActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
         restrictionsMap = (HashMap<String, String>) intent.getSerializableExtra("restrictionsMap");
         userID = intent.getStringExtra("userID");
 
@@ -92,7 +89,7 @@ public class ShelterListActivity extends AppCompatActivity {
             listView.setLayoutManager(layout);
 
             //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(ShelterList.getMap(), theMap, userID);
+            ShelterListAdapter adapter = new ShelterListAdapter(ShelterList.getMap(), userID);
             listView.setAdapter(adapter);
         } else {
             //copy shelter files into shelterlist and shelter models
@@ -107,7 +104,7 @@ public class ShelterListActivity extends AppCompatActivity {
             listView.setLayoutManager(layout);
 
             //set adapter
-            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")), theMap, userID);
+            ShelterListAdapter adapter = new ShelterListAdapter(list.getByRestriction(restrictionsMap.get("Gender"), restrictionsMap.get("AgeRange"), restrictionsMap.get("ShelterName")), userID);
             listView.setAdapter(adapter);
         }
     }
@@ -120,14 +117,12 @@ public class ShelterListActivity extends AppCompatActivity {
 
     private void goToSearch() {
         Intent intent = new Intent(getBaseContext(), SearchActivity.class);
-        intent.putExtra("map", theMap);
         intent.putExtra("userID", userID);
         startActivity(intent);
     }
 
     private void goToLogin() {
         Intent intent = new Intent(getBaseContext(), WelcomeActivity.class);
-        intent.putExtra("map", theMap);
         startActivity(intent);
     }
 
@@ -145,16 +140,17 @@ public class ShelterListActivity extends AppCompatActivity {
                     while ((line = br.readLine()) != null) {
                         String[] traits = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                         for (int i = 0; i < traits.length; i++) {
-                            if(traits[i] == null || traits[i].length() == 0) {
+                            if((traits[i] == null) || traits[i].isEmpty()) {
                                 traits[i] = "Not available";
-                            } else if (traits[i].charAt(0) == '"' && traits[i].charAt(traits[i].length() - 1) == '"'){
+                            } else if ((traits[i].charAt(0) == '"') && (traits[i].charAt(traits[i].length() - 1) == '"')){
                                 traits[i] = traits[i].substring(1, traits[i].length() - 1);
                             }
                         }
-                        list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[8], traits.length > 9 ? traits[9] : "Not available"));
+                        list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[8], (traits.length > 9) ? traits[9] : "Not available"));
                     }
                     br.close();
                 } catch (IOException e) {
+                    e.printStackTrace();
                 }
                 try {
                     //make writer, append set to true
@@ -176,7 +172,7 @@ public class ShelterListActivity extends AppCompatActivity {
                 CSVReader csvReader = new CSVReader(reader);
                 String traits[];
                 while ((traits = csvReader.readNext()) != null) {
-                    list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[7], traits.length > 8 ? traits[8] : "Not available"));
+                    list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4], traits[5], traits[6], traits[7], (traits.length > 8) ? traits[8] : "Not available"));
                 }
             }
         } catch (IOException e) {
