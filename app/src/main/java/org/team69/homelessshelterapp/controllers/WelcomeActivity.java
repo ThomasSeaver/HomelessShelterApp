@@ -48,7 +48,6 @@ public class WelcomeActivity extends AppCompatActivity {
         //Only should use if you are having issues with users/shelter lists, or if you want to clear
         //debugClear();
 
-
         Intent intent = getIntent();
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
     }
