@@ -21,12 +21,14 @@ public class EmptyAppActivity extends AppCompatActivity {
     private HashMap<String, String> theMap;
     private User theUser;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.emptyapp_screen);
 
         logoutButton =  findViewById(R.id.button5);
         logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 goToLogin();
             }

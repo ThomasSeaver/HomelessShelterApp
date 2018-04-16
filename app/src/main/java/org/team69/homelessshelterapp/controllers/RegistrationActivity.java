@@ -35,7 +35,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText passwordInput;
     private Spinner adminOrUserSpinner;
     private HashMap<String, String> theMap;
-    private Map<String, User> userList = new HashMap<>();
+    private final Map<String, User> userList = new HashMap<>();
     private int lastUserID;
 
     @Override
@@ -48,6 +48,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         doneButton =  findViewById(R.id.RegistrationDoneButton);
         doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 if (usernameInput.getText().toString() != null
                         && passwordInput.getText().toString() != null) {
@@ -59,15 +60,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
         cancelButton = findViewById(R.id.RegistrationCancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 goBackToWelcome();
             }
         });
 
-        usernameInput = (EditText) findViewById(R.id.RegistrationUsernameText);
-        passwordInput = (EditText) findViewById(R.id.RegistrationPasswordText);
+        usernameInput = findViewById(R.id.RegistrationUsernameText);
+        passwordInput = findViewById(R.id.RegistrationPasswordText);
 
-        adminOrUserSpinner = (Spinner) findViewById(R.id.AdminOrUserSpinner);
+        adminOrUserSpinner = findViewById(R.id.AdminOrUserSpinner);
         String[] possibleValues = new String[2];
         possibleValues[0] = "User";
         possibleValues[1] = "Admin";

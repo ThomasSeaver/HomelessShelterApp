@@ -23,12 +23,14 @@ public class WelcomeActivity extends AppCompatActivity {
     private HashMap<String, String> theMap;
 
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_screen);
 
         loginButton =  findViewById(R.id.button);
         loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 goToLogin();
             }
@@ -36,6 +38,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         registrationButton = findViewById(R.id.button2);
         registrationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 goToRegistration();
             }
@@ -47,7 +50,6 @@ public class WelcomeActivity extends AppCompatActivity {
         //Would work without restarting but would redelete everything if you ever come back to welcome
         //Only should use if you are having issues with users/shelter lists, or if you want to clear
         //debugClear();
-
 
         Intent intent = getIntent();
         theMap = (HashMap<String, String>) intent.getSerializableExtra("map");
