@@ -41,6 +41,7 @@ import java.util.Map;
  * Maps activity for holding the google maps view. Creates markers, map, and places them in front
  * of user with ability to search or return to list.
  */
+@SuppressWarnings("unchecked")
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap viewMap;
@@ -167,7 +168,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             new InputStreamReader(is, StandardCharsets.UTF_8));
                     String line;
                     br.readLine();
-                    while ((line = br.readLine()) != null) {
+                    line = br.readLine();
+                    while (line != null) {
                         String[] traits = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                         for (int i = 0; i < traits.length; i++) {
                             if((traits[i] == null) || traits[i].isEmpty()) {
@@ -180,6 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3],
                                 traits[4], traits[5], traits[6], traits[8],
                                 (traits.length > 9) ? traits[9] : "Not available"));
+                        line = br.readLine();
                     }
                     br.close();
                 } catch (IOException e) {
@@ -208,10 +211,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Reader reader =  new BufferedReader(new FileReader(csv.getPath()));
                 CSVReader csvReader = new CSVReader(reader);
                 String traits[];
-                while ((traits = csvReader.readNext()) != null) {
+                traits = csvReader.readNext();
+                while (traits != null) {
                     list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3],
                             traits[4], traits[5], traits[6], traits[7],
                             (traits.length > 8) ? traits[8] : "Not available"));
+                    traits = csvReader.readNext();
                 }
             }
         } catch (IOException e) {

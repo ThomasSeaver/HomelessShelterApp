@@ -105,10 +105,11 @@ public class LoginActivity extends AppCompatActivity {
             Reader reader =  new BufferedReader(new FileReader(filePath));
             CSVReader csvReader = new CSVReader(reader);
             String traits[];
-            while ((traits = csvReader.readNext()) != null) {
+            traits = csvReader.readNext();
+            while (traits != null) {
                 userList.put(traits[0], new User(traits[1], traits[2], traits[3],
                         Integer.parseInt(traits[4])));
-
+                traits = csvReader.readNext();
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -252,10 +252,11 @@ public class DetailActivity extends AppCompatActivity {
             Reader reader =  new BufferedReader(new FileReader(filePath));
             CSVReader csvReader = new CSVReader(reader);
             String traits[];
-            while ((traits = csvReader.readNext()) != null) {
+            traits = csvReader.readNext();
+            while (traits != null) {
                 userList.put(traits[0], new User(traits[1], traits[2], traits[3],
                         Integer.parseInt(traits[4])));
-
+                traits = csvReader.readNext();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -270,10 +271,12 @@ public class DetailActivity extends AppCompatActivity {
             Reader reader =  new BufferedReader(new FileReader(csv.getPath()));
             CSVReader csvReader = new CSVReader(reader);
             String traits[];
-            while ((traits = csvReader.readNext()) != null) {
+            traits = csvReader.readNext();
+            while (traits != null) {
                 list.addShelter(traits[0], new Shelter(traits[1], traits[2], traits[3], traits[4],
                         traits[5], traits[6], traits[7],
                         (traits.length > 8) ? traits[8] : "Not available"));
+                traits = csvReader.readNext();
             }
         } catch (IOException e) {
             e.printStackTrace();
