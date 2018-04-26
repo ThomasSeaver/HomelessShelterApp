@@ -30,4 +30,5 @@
     <string name="name">Name</string>
     <string name="search">Search</string>
     <string name="shelter_name">Shelter Name</string>
+    <string name="lockout">Too many failed logins, please wait five minutes</string>
 </resources>
