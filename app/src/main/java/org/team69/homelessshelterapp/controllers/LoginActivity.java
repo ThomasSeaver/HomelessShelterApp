@@ -88,14 +88,17 @@ public class LoginActivity extends AppCompatActivity {
         Editable passwordObj = passwordInput.getText();
         final String username = userNameObj.toString();
         final String pass = passwordObj.toString();
-        checkUsingFile(username, pass);
+        if (!checkUsingFile(username, pass)) {
+            return;
+        }
         refDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                //Log.d("eyoy", dataSnapshot.child(username).child("password").getValue().toString());
-                if(dataSnapshot.child(username).child("password").getValue().toString().equals(pass)){
+                if(dataSnapshot.child(username).child("password").getValue() != null
+                        && dataSnapshot.child(username).child("password").getValue().toString()
+                        .equals(pass)){
                     //Log.d("eyoy", "Password Correct!");
                     failedLogins = 0;
                     wrongLogin.setVisibility(View.INVISIBLE);
@@ -106,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     //Log.d("eyoy", "Password Incorrect!");
                     //Log.d("eyoy", "Passed in word is: " + pass);
-                    //Log.d("eyoy", "Correct password is: " + dataSnapshot.child(username).child("password").getValue().toString());
                     if (failedLogins < 3) {
                         wrongLogin.setVisibility(View.VISIBLE);
                         failedLogins++;
@@ -204,8 +206,10 @@ public class LoginActivity extends AppCompatActivity {
                 return true;
             }
         }
-        return false;
-
+        if (username.equals("") || pass.equals("")) {
+            return false;
+        }
+        return true;
     }
 
 
