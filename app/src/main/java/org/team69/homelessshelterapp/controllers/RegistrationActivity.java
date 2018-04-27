@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Button;
@@ -19,6 +20,11 @@ import java.io.Reader;
 import java.util.Map;
 import java.util.HashMap;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
@@ -37,6 +43,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText passwordInput;
     private final Map<String, User> userList = new HashMap<>();
     private int lastUserID;
+    private DatabaseReference refDatabase = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +91,39 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void createUser() {
         Editable usernameObj = usernameInput.getText();
+        final Editable username = usernameInput.getText();
+        final Editable password = passwordInput.getText();
+        //Log.d("eyoy", "got username input: " + username.toString());
+        //Log.d("eyoy", "got password input: " + password.toString());
+
+        refDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                //Log.d("eyoy", dataSnapshot.child(username.toString()).toString());
+                if(dataSnapshot.child(username.toString()).exists()){
+                    //Log.d("eyoy", "Username exists: " + username.toString());
+                    // use "username" already exists
+                    // Let the user know he needs to pick another username.
+                } else {
+                    //Begin Firebase init
+                    //Log.d("eyoy", "Username doesn't exist: " + username.toString());
+                    refDatabase.child("users").child(username.toString()).setValue(
+                            new User(username.toString(), password.toString(), "-1", 0));
+                    //End Firebase init
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("eyoy", "Failed to read value.", error.toException());
+            }
+        });
+
+        //Should be useless
         if (userNameAvailable(usernameObj.toString())) {
             try {
                 //get file in memory
@@ -92,8 +132,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 //make writer, append set to true
                 CSVWriter writer = new CSVWriter(new FileWriter(filePath, true));
                 //form
-                Editable username = usernameInput.getText();
-                Editable password = passwordInput.getText();
+                //Editable username = usernameInput.getText();
+                //Editable password = passwordInput.getText();
                 String [] record = (String.valueOf(lastUserID) + ","
                         + username.toString() + ","
                         + password.toString() + ",-1,0").split(",");
@@ -101,13 +141,20 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 writer.close();
 
+                //Begin Firebase init
+                //refDatabase.child("users").child(username.toString()).setValue(
+                //        new User(username.toString(), password.toString(), "-1", 0));
+                //End Firebase init
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
+    //should be useless
     private boolean userNameAvailable(String name) {
+        // Read from the database
         for (User user : userList.values()) {
             String username = user.getUsername();
             if (username.equals(name)) {

@@ -5,11 +5,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Button;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.opencsv.CSVReader;
 
 import java.io.BufferedReader;
@@ -39,9 +45,11 @@ public class LoginActivity extends AppCompatActivity {
     private EditText lockoutText;
     private Button doneButton;
     private Button cancelButton;
-    private final Map<String, User> userList = new HashMap<>();
     private String userID;
+    private final Map<String, User> userList = new HashMap<>();
     private int failedLogins = 0;
+    private DatabaseReference refDatabase = FirebaseDatabase.getInstance().getReference();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +86,67 @@ public class LoginActivity extends AppCompatActivity {
     private void checkUserPass() {
         Editable userNameObj = usernameInput.getText();
         Editable passwordObj = passwordInput.getText();
+        final String username = userNameObj.toString();
+        final String pass = passwordObj.toString();
+        checkUsingFile(username, pass);
+        refDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                //Log.d("eyoy", dataSnapshot.child(username).child("password").getValue().toString());
+                if(dataSnapshot.child(username).child("password").getValue().toString().equals(pass)){
+                    //Log.d("eyoy", "Password Correct!");
+                    failedLogins = 0;
+                    wrongLogin.setVisibility(View.INVISIBLE);
+                    Intent intent = new Intent(getBaseContext(), ShelterListActivity.class);
+                    //get the user detail
+                    intent.putExtra("userID", userID);
+                    startActivity(intent);
+                } else {
+                    //Log.d("eyoy", "Password Incorrect!");
+                    //Log.d("eyoy", "Passed in word is: " + pass);
+                    //Log.d("eyoy", "Correct password is: " + dataSnapshot.child(username).child("password").getValue().toString());
+                    if (failedLogins < 3) {
+                        wrongLogin.setVisibility(View.VISIBLE);
+                        failedLogins++;
+                    } else {
+                        wrongLogin.setVisibility(View.INVISIBLE);
+                        lockoutText.setVisibility(View.VISIBLE);
+                        doneButton.setVisibility(View.INVISIBLE);
+                        cancelButton.setVisibility(View.INVISIBLE);
+                        usernameInput.setVisibility(View.INVISIBLE);
+                        passwordInput.setVisibility(View.INVISIBLE);
+                        usernameText.setVisibility(View.INVISIBLE);
+                        passwordText.setVisibility(View.INVISIBLE);
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                lockoutText.setVisibility(View.INVISIBLE);
+                                doneButton.setVisibility(View.VISIBLE);
+                                cancelButton.setVisibility(View.VISIBLE);
+                                usernameInput.setVisibility(View.VISIBLE);
+                                passwordInput.setVisibility(View.VISIBLE);
+                                usernameText.setVisibility(View.VISIBLE);
+                                passwordText.setVisibility(View.VISIBLE);
+                                failedLogins = 0;
+                            }
+                        }, 15000);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("eyoy", "Failed to read value.", error.toException());
+            }
+        });
+
+
+
+        /*
         if (checkUsingFile(userNameObj.toString(), passwordObj.toString())) {
             failedLogins = 0;
             wrongLogin.setVisibility(View.INVISIBLE);
@@ -113,7 +182,8 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }, 15000);
             }
-        }
+
+        }*/
     }
 
     private void goBackToWelcome() {
@@ -121,7 +191,9 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private boolean checkUsingFile(String username, String pass) {
+
+    private boolean checkUsingFile(final String username, final String pass) {
+
         for (Map.Entry<String, User> user : userList.entrySet())
         {
             User value = user.getValue();
@@ -133,7 +205,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return false;
+
     }
+
 
     private void readUserFile() {
 
@@ -153,4 +227,5 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 }
